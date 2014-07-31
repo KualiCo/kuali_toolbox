@@ -14,12 +14,24 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require "bundler/gem_tasks"
-require "rspec/core/rake_task"
+require 'simplecov'
 
-task :default => [:spec]
+RSpec.configure do |config|
+  # capture original references for later
+  original_stderr = $stderr
+  original_stdout = $stdout
 
-desc "Run the specs."
-RSpec::Core::RakeTask.new do |t|
-  t.pattern = "spec/**/*_spec.rb"
+  config.before(:all) do
+    # Redirect stderr and stdout to /dev/null
+    $stderr = File.new '/dev/null', 'w'
+    $stdout = File.new '/dev/null', 'w'
+  end
+
+  config.after(:all) do
+    # restore original references
+    $stderr = original_stderr
+    $stdout = original_stdout
+  end
 end
+
+SimpleCov.start
