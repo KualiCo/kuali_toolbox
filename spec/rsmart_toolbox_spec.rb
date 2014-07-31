@@ -281,12 +281,20 @@ RSpec.describe CX do
   end
 
   describe "#parse_rolodex_id!" do
+    #   `ROLODEX_ID` decimal(6,0) NOT NULL DEFAULT '0',
+
     it "Modifies the insert_str and values_str based on a CSV::Row match" do
       insert_str = ""; values_str = "";
       row = CSV::Row.new(['rolodex_id'.to_sym], ['123456'], true)
       CX.parse_rolodex_id!(row, insert_str, values_str)
       expect(insert_str).to eq("ROLODEX_ID,")
-      expect(values_str).to eq("'123456',")
+      expect(values_str).to eq("123456,")
+
+      insert_str = ""; values_str = "";
+      row = CSV::Row.new(['rolodex_id'.to_sym], ['000001'], true)
+      CX.parse_rolodex_id!(row, insert_str, values_str)
+      expect(insert_str).to eq("ROLODEX_ID,")
+      expect(values_str).to eq("1,")
     end
 
     it "Raises an TextParseError if nil or empty" do

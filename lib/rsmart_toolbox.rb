@@ -166,7 +166,7 @@ module RsmartToolbox
       opt[:name]     = "ROLODEX_ID" if opt[:name].nil?
       opt[:required] = true if opt[:required].nil?
       opt[:length]   = 6 if opt[:length].nil?
-      parse_string! row, insert_str, values_str, opt
+      parse_integer! row, insert_str, values_str, opt
     end
 
     def self.parse_country_code!(row, insert_str, values_str, opt={})
