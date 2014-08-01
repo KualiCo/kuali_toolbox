@@ -86,7 +86,7 @@ module RsmartToolbox
 
     def self.to_symbol(str)
       raise ArgumentError, "Illegal symbol name: '#{str}'" if str.nil? || str.empty?
-      str.downcase.to_sym
+      str.downcase.gsub(/\s+/, "_").gsub(/\W+/, "").to_sym
     end
 
     # DRY up some common string manipulation

@@ -1022,4 +1022,20 @@ RSpec.describe CX do
     end
   end
 
+  describe "#to_symbol" do
+    it "is downcased" do
+      sample = CX.to_symbol "ROLODEX_ID"
+      expect(sample).to eq("rolodex_id".to_sym)
+    end
+
+    it "spaces are replaced with underscores" do
+      sample = CX.to_symbol "ROLODEX_ID "
+      expect(sample).to eq("rolodex_id_".to_sym)
+    end
+
+    it "non-word characters are dropped" do
+      sample = CX.to_symbol "ROLODEX_ID&"
+      expect(sample).to eq("rolodex_id".to_sym)
+    end
+  end
 end
