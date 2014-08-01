@@ -24,7 +24,7 @@ module RsmartToolbox
   class TextParseError < StandardError
   end
 
-  class CX
+  module CX
 
     # Responds to String or Exception.
     def self.error(e)
