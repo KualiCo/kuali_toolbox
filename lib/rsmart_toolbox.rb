@@ -90,7 +90,7 @@ module RsmartToolbox
     end
 
     # DRY up some common string manipulation
-    def self.mutate_sql_stmt(insert_str, column_name, values_str, value)
+    def self.mutate_sql_stmt!(insert_str, column_name, values_str, value)
       insert_str.concat "#{column_name.upcase},"
       # TODO what are all of the valid types that should not be quoted?
       if value.kind_of? Integer
@@ -134,7 +134,7 @@ module RsmartToolbox
     def self.parse_string!(row, insert_str, values_str, opt={})
       raise ArgumentError, "opt[:name] is required!" unless opt[:name]
       str = parse_string( row[ to_symbol( opt[:name] ) ], opt )
-      mutate_sql_stmt insert_str, opt[:name], values_str, str
+      mutate_sql_stmt! insert_str, opt[:name], values_str, str
     end
 
     def self.parse_integer(str, opt={})
@@ -149,7 +149,7 @@ module RsmartToolbox
     def self.parse_integer!(row, insert_str, values_str, opt={})
       raise ArgumentError, "opt[:name] is required!" unless opt[:name]
       i = parse_integer( row[ to_symbol( opt[:name] ) ], opt )
-      mutate_sql_stmt insert_str, opt[:name], values_str, i
+      mutate_sql_stmt! insert_str, opt[:name], values_str, i
     end
 
     def self.parse_float(str, opt={})
@@ -232,7 +232,7 @@ module RsmartToolbox
       #   `ACTV_IND` varchar(1) COLLATE utf8_bin DEFAULT 'Y',
       opt[:name] = "actv_ind" if opt[:name].nil?
       actv_ind = parse_actv_ind row[ to_symbol( opt[:name] ) ]
-      mutate_sql_stmt insert_str, opt[:name], values_str, actv_ind
+      mutate_sql_stmt! insert_str, opt[:name], values_str, actv_ind
     end
 
     def self.parse_email_address(str, opt={})
@@ -247,7 +247,7 @@ module RsmartToolbox
       #   `EMAIL_ADDRESS` varchar(60) COLLATE utf8_bin DEFAULT NULL,
       opt[:name] = "EMAIL_ADDRESS" if opt[:name].nil?
       email_address = parse_email_address row[ to_symbol( opt[:name] ) ]
-      mutate_sql_stmt insert_str, opt[:name], values_str, email_address
+      mutate_sql_stmt! insert_str, opt[:name], values_str, email_address
     end
 
     def self.parse_principal_id(str, opt={})
