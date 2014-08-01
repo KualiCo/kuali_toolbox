@@ -84,9 +84,19 @@ module RsmartToolbox
       raise error TextParseError.new "invalid value for Boolean: '#{str}'"
     end
 
+    # Simply here to help ensure we consistently apply the same encoding options.
+    def self.encode(str, opt={} )
+      opt[:encoding] = "UTF-8" if opt[:encoding].nil?
+      str.encode( opt[:encoding], :invalid => :replace,
+                  :undef => :replace, :replace => "" )
+    end
+
+    # Matches MRI CSV specification:
+    # The header String is downcased, spaces are replaced with underscores,
+    # non-word characters are dropped, and finally to_sym() is called.
     def self.to_symbol(str)
       raise ArgumentError, "Illegal symbol name: '#{str}'" if str.nil? || str.empty?
-      str.downcase.gsub(/\s+/, "_").gsub(/\W+/, "").to_sym
+      encode( str.downcase.gsub(/\s+/, "_").gsub(/\W+/, "") ).to_sym
     end
 
     # DRY up some common string manipulation
@@ -109,9 +119,7 @@ module RsmartToolbox
 
     def self.parse_string(str, opt={})
       opt[:strict]   = true if opt[:strict].nil?
-      opt[:encoding] = "UTF-8" if opt[:encoding].nil?
-      retval = str.to_s.strip.encode(opt[:encoding], :invalid => :replace, :undef =>
-                                     :replace, :replace => "")
+      retval = encode str.to_s.strip
       if opt[:required] && retval.empty?
         raise error TextParseError.new "Required data element '#{opt[:name]}' not found: '#{str}'"
       end
