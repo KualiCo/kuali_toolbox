@@ -17,4 +17,32 @@
 require "rsmart_toolbox"
 
 module RsmartToolbox::ETL
+
+  class TextParseError < StandardError
+  end
+
+  # Responds to String or Exception.
+  def self.error(e)
+    if e.kind_of? String
+      # default to TextParseError
+      return TextParseError.new "ERROR: Line #{$INPUT_LINE_NUMBER}: #{e}"
+    end
+    if e.kind_of? Exception
+      return e.exception "ERROR: Line #{$INPUT_LINE_NUMBER}: #{e}"
+    end
+    raise ArgumentError, "Unsupported error type: #{e.class}"
+  end
+
+  # Responds to String or Exception.
+  def self.warning(e)
+    if e.kind_of? String
+      # default to TextParseError
+      return TextParseError.new "WARN:  Line #{$INPUT_LINE_NUMBER}: #{e}"
+    end
+    if e.kind_of? Exception
+      return e.exception "WARN:  Line #{$INPUT_LINE_NUMBER}: #{e}"
+    end
+    raise ArgumentError, "Unsupported error type: #{e.class}"
+  end
+
 end

@@ -18,33 +18,6 @@ require "rsmart_toolbox/etl"
 
 module RsmartToolbox::ETL::GRM
 
-  class TextParseError < StandardError
-  end
-
-  # Responds to String or Exception.
-  def self.error(e)
-    if e.kind_of? String
-      # default to TextParseError
-      return TextParseError.new "ERROR: Line #{$INPUT_LINE_NUMBER}: #{e}"
-    end
-    if e.kind_of? Exception
-      return e.exception "ERROR: Line #{$INPUT_LINE_NUMBER}: #{e}"
-    end
-    raise ArgumentError, "Unsupported error type: #{e.class}"
-  end
-
-  # Responds to String or Exception.
-  def self.warning(e)
-    if e.kind_of? String
-      # default to TextParseError
-      return TextParseError.new "WARN:  Line #{$INPUT_LINE_NUMBER}: #{e}"
-    end
-    if e.kind_of? Exception
-      return e.exception "WARN:  Line #{$INPUT_LINE_NUMBER}: #{e}"
-    end
-    raise ArgumentError, "Unsupported error type: #{e.class}"
-  end
-
   # Test to see if subject is a member of valid_values Array
   def self.valid_value(subject, valid_values, opt={})
     raise ArgumentError, "valid_values must not be nil!" if valid_values.nil?
@@ -76,7 +49,7 @@ module RsmartToolbox::ETL::GRM
     if b.empty?
       return nil
     end
-    raise error TextParseError.new "invalid value for Boolean: '#{str}'"
+    raise RsmartToolbox::ETL::error TextParseError.new "invalid value for Boolean: '#{str}'"
   end
 
   # Simply here to help ensure we consistently apply the same encoding options.
@@ -116,7 +89,7 @@ module RsmartToolbox::ETL::GRM
     opt[:strict]   = true if opt[:strict].nil?
     retval = encode str.to_s.strip
     if opt[:required] && retval.empty?
-      raise error TextParseError.new "Required data element '#{opt[:name]}' not found: '#{str}'"
+      raise RsmartToolbox::ETL::error TextParseError.new "Required data element '#{opt[:name]}' not found: '#{str}'"
     end
     if opt[:default] && retval.empty?
       retval = opt[:default]
@@ -124,12 +97,12 @@ module RsmartToolbox::ETL::GRM
     if opt[:length] && retval.length > opt[:length].to_i
       detail = "#{opt[:name]}.length > #{opt[:length]}: '#{str}'-->'#{str[0..(opt[:length] - 1)]}'"
       if opt[:strict]
-        raise error TextParseError.new "Data exceeds maximum field length: #{detail}"
+        raise RsmartToolbox::ETL::error TextParseError.new "Data exceeds maximum field length: #{detail}"
       end
-      warning "Data will be truncated: #{detail}"
+      RsmartToolbox::ETL::warning "Data will be truncated: #{detail}"
     end
     if opt[:valid_values] && ! valid_value(retval, opt[:valid_values], opt)
-      raise error TextParseError.new "Illegal #{opt[:name]}: value '#{str}' not found in: #{opt[:valid_values]}"
+      raise RsmartToolbox::ETL::error TextParseError.new "Illegal #{opt[:name]}: value '#{str}' not found in: #{opt[:valid_values]}"
     end
     return escape_single_quotes retval
   end
@@ -268,7 +241,7 @@ module RsmartToolbox::ETL::GRM
     opt[:required] = true if opt[:required].nil?
     prncpl_nm = parse_string str, opt
     unless prncpl_nm =~ /^([a-z0-9\@\.\_\-]+)$/
-      raise error TextParseError.new "Illegal prncpl_nm found: '#{prncpl_nm}'"
+      raise RsmartToolbox::ETL::error TextParseError.new "Illegal prncpl_nm found: '#{prncpl_nm}'"
     end
     return prncpl_nm
   end
