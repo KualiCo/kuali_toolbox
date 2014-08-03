@@ -17,11 +17,10 @@
 require 'spec_helper'
 require 'rsmart_toolbox/etl/grm'
 
-ETL = RsmartToolbox::ETL
 CX  = RsmartToolbox::ETL::GRM
 TextParseError = RsmartToolbox::ETL::TextParseError
 
-RSpec.describe CX do
+RSpec.describe "RsmartToolbox::ETL::GRM" do
   describe '#valid_value' do
     it "tests semantic equality against a set of valid values" do
       expect(CX.valid_value(1, [1, 2, 3])).to eq(true)
@@ -962,64 +961,6 @@ RSpec.describe CX do
       else
         raise "Unexpected Exception found: #{e.class}"
       end
-    end
-  end
-
-  describe "#error" do
-    it "it returns a TextParseError when passed a String" do
-      expect(ETL::error("foo")).to be_kind_of TextParseError
-    end
-
-    it "reformats the message with additional context information" do
-      e = ETL::error("foo")
-      expect(e.message).to include "foo"
-      expect(e.message).to match /^ERROR:\s+Line\s+(\d+):\s+.+$/
-    end
-
-    it "supports passing Exceptions and maintains type" do
-      e1 = NotImplementedError.new "foo"
-      e2 = ETL::error(e1)
-      expect(ETL::error(e2)).to be_kind_of NotImplementedError
-    end
-
-    it "supports passing Exceptions and maintains message" do
-      e1 = NotImplementedError.new "foo"
-      e2 = ETL::error(e1)
-      expect(e2.message).to include e1.message
-      expect(e2.message).to match /^ERROR:\s+Line\s+(\d+):\s+.+$/
-    end
-
-    it "raises an ArgumentError if passed an unsupported type" do
-      expect { ETL::error("foo".to_i) }.to raise_error(ArgumentError)
-    end
-  end
-
-  describe "#warning" do
-    it "it returns a TextParseError when passed a String" do
-      expect(ETL::warning("foo")).to be_kind_of TextParseError
-    end
-
-    it "reformats the message with additional context information" do
-      e = ETL::warning("foo")
-      expect(e.message).to include "foo"
-      expect(e.message).to match /^WARN:\s+Line\s+(\d+):\s+.+$/
-    end
-
-    it "supports passing Exceptions and maintains type" do
-      e1 = NotImplementedError.new "foo"
-      e2 = ETL::warning(e1)
-      expect(ETL::warning(e2)).to be_kind_of NotImplementedError
-    end
-
-    it "supports passing Exceptions and maintains message" do
-      e1 = NotImplementedError.new "foo"
-      e2 = ETL::warning(e1)
-      expect(e2.message).to include e1.message
-      expect(e2.message).to match /^WARN:\s+Line\s+(\d+):\s+.+$/
-    end
-
-    it "raises an ArgumentError if passed an unsupported type" do
-      expect { ETL::warning("foo".to_i) }.to raise_error(ArgumentError)
     end
   end
 
