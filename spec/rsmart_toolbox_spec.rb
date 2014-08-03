@@ -15,10 +15,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'spec_helper'
-require 'rsmart_toolbox/data/grm'
+require 'rsmart_toolbox/etl/grm'
 
-CX = RsmartToolbox::Data::GRM
-TextParseError = RsmartToolbox::Data::GRM::TextParseError
+CX = RsmartToolbox::ETL::GRM
+TextParseError = RsmartToolbox::ETL::GRM::TextParseError
 
 RSpec.describe CX do
   describe '#valid_value' do

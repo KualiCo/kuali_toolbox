@@ -16,5 +16,5 @@
 
 require "rsmart_toolbox"
 
-module RsmartToolbox::Data
+module RsmartToolbox::ETL
 end
