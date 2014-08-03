@@ -15,10 +15,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'spec_helper'
-require 'rsmart_toolbox'
+require 'rsmart_toolbox/data/grm'
 
-CX = RsmartToolbox::CX
-TextParseError = RsmartToolbox::TextParseError
+CX = RsmartToolbox::Data::GRM
+TextParseError = RsmartToolbox::Data::GRM::TextParseError
 
 RSpec.describe CX do
   describe '#valid_value' do
