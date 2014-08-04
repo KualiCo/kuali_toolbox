@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
   spec.version       = RsmartToolbox::VERSION
   spec.authors       = ["Lance Speelmon"]
   spec.email         = ["lspeelmon@rsmart.com"]
-  spec.summary       = %q{Client library and command-line tool to help interact with rSmart's cloud APIs.}
+  spec.summary       = %q{Client library and command-line tools to help interact with rSmart's cloud APIs.}
   # spec.description   = %q{TODO: Write a longer description. Optional.}
   spec.homepage      = "https://github.com/rSmart/rsmart_toolbox"
   spec.metadata      = { "issue_tracker" => "https://github.com/rSmart/rsmart_toolbox/issues" }

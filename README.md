@@ -1,9 +1,10 @@
-rsmart_toolbox
---------------
+# rsmart_toolbox
 
-Client library and command-line tool to help interact with rSmart's cloud APIs.
+[![Gem Version](https://badge.fury.io/rb/rsmart_toolbox.svg)](http://badge.fury.io/rb/rsmart_toolbox)
 
-### Installation
+Client library and command-line tools to help interact with rSmart's cloud APIs.
+
+## Installation
 
 Add this line to your application's Gemfile:
 
@@ -19,11 +20,11 @@ Or install it yourself as:
 
     $ gem install rsmart_toolbox
 
-### Usage
+## Usage
 
 TODO: Write usage instructions here
 
-### Contributing
+## Contributing
 
 1. Fork it ( https://github.com/rSmart/rsmart_toolbox/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
