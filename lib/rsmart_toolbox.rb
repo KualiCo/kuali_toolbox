@@ -19,5 +19,5 @@ require 'optparse'
 require 'pp'
 require "rsmart_toolbox/version"
 
-module RsmartToolbox
+module Rsmart
 end

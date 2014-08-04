@@ -17,11 +17,11 @@
 require 'spec_helper'
 require 'rsmart_toolbox'
 
-RSpec.describe "RsmartToolbox" do
+RSpec.describe "Rsmart" do
 
   it "has a VERSION number" do
-    expect( RsmartToolbox::VERSION ).not_to be_nil
-    expect( RsmartToolbox::VERSION ).to match /^(\d+)\.*(\d+)\.*(\d+)*\.*(\d+)*$/
+    expect( Rsmart::VERSION ).not_to be_nil
+    expect( Rsmart::VERSION ).to match /^(\d+)\.*(\d+)\.*(\d+)*\.*(\d+)*$/
   end
 
 end

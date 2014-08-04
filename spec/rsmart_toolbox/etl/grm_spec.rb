@@ -17,10 +17,10 @@
 require 'spec_helper'
 require 'rsmart_toolbox/etl/grm'
 
-GRM  = RsmartToolbox::ETL::GRM
-TextParseError = RsmartToolbox::ETL::TextParseError
+GRM  = Rsmart::ETL::GRM
+TextParseError = Rsmart::ETL::TextParseError
 
-RSpec.describe "RsmartToolbox::ETL::GRM" do
+RSpec.describe "Rsmart::ETL::GRM" do
 
   describe "#parse_rolodex_id!" do
     #   `ROLODEX_ID` decimal(6,0) NOT NULL DEFAULT '0',

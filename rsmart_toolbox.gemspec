@@ -21,7 +21,7 @@ require 'rsmart_toolbox/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "rsmart_toolbox"
-  spec.version       = RsmartToolbox::VERSION
+  spec.version       = Rsmart::VERSION
   spec.authors       = ["Lance Speelmon"]
   spec.email         = ["lspeelmon@rsmart.com"]
   spec.summary       = %q{Client library and command-line tools to help interact with rSmart's cloud APIs.}

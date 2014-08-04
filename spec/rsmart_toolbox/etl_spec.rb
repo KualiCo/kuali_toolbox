@@ -17,9 +17,9 @@
 require 'spec_helper'
 require 'rsmart_toolbox/etl'
 
-ETL = RsmartToolbox::ETL
+ETL = Rsmart::ETL
 
-RSpec.describe "RsmartToolbox::ETL" do
+RSpec.describe "Rsmart::ETL" do
 
   describe "#error" do
     it "it returns a TextParseError when passed a String" do

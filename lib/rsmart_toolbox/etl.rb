@@ -16,7 +16,7 @@
 
 require "rsmart_toolbox"
 
-module RsmartToolbox::ETL
+module Rsmart::ETL
 
   class TextParseError < StandardError
   end
@@ -76,7 +76,7 @@ module RsmartToolbox::ETL
     if b.empty?
       return nil
     end
-    raise RsmartToolbox::ETL::error TextParseError.new "invalid value for Boolean: '#{str}'"
+    raise Rsmart::ETL::error TextParseError.new "invalid value for Boolean: '#{str}'"
   end
 
   # Simply here to help ensure we consistently apply the same encoding options.
@@ -116,7 +116,7 @@ module RsmartToolbox::ETL
     opt[:strict]   = true if opt[:strict].nil?
     retval = encode str.to_s.strip
     if opt[:required] && retval.empty?
-      raise RsmartToolbox::ETL::error TextParseError.new "Required data element '#{opt[:name]}' not found: '#{str}'"
+      raise Rsmart::ETL::error TextParseError.new "Required data element '#{opt[:name]}' not found: '#{str}'"
     end
     if opt[:default] && retval.empty?
       retval = opt[:default]
@@ -124,12 +124,12 @@ module RsmartToolbox::ETL
     if opt[:length] && retval.length > opt[:length].to_i
       detail = "#{opt[:name]}.length > #{opt[:length]}: '#{str}'-->'#{str[0..(opt[:length] - 1)]}'"
       if opt[:strict]
-        raise RsmartToolbox::ETL::error TextParseError.new "Data exceeds maximum field length: #{detail}"
+        raise Rsmart::ETL::error TextParseError.new "Data exceeds maximum field length: #{detail}"
       end
-      RsmartToolbox::ETL::warning "Data will be truncated: #{detail}"
+      Rsmart::ETL::warning "Data will be truncated: #{detail}"
     end
     if opt[:valid_values] && ! valid_value(retval, opt[:valid_values], opt)
-      raise RsmartToolbox::ETL::error TextParseError.new "Illegal #{opt[:name]}: value '#{str}' not found in: #{opt[:valid_values]}"
+      raise Rsmart::ETL::error TextParseError.new "Illegal #{opt[:name]}: value '#{str}' not found in: #{opt[:valid_values]}"
     end
     return escape_single_quotes retval
   end
@@ -189,8 +189,8 @@ module RsmartToolbox::ETL
   def self.parse_actv_ind!(row, insert_str, values_str, opt={})
     #   `ACTV_IND` varchar(1) COLLATE utf8_bin DEFAULT 'Y',
     opt[:name] = "actv_ind" if opt[:name].nil?
-    actv_ind = RsmartToolbox::ETL::parse_actv_ind row[ to_symbol( opt[:name] ) ]
-    RsmartToolbox::ETL::mutate_sql_stmt! insert_str, opt[:name], values_str, actv_ind
+    actv_ind = Rsmart::ETL::parse_actv_ind row[ to_symbol( opt[:name] ) ]
+    Rsmart::ETL::mutate_sql_stmt! insert_str, opt[:name], values_str, actv_ind
   end
 
   # Parse common command line options for CSV --> SQL transformations.
