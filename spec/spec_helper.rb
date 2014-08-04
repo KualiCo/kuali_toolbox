@@ -14,7 +14,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'simplecov'
+# require 'simplecov'
+require 'codeclimate-test-reporter'
 
 RSpec.configure do |config|
   # capture original references for later
@@ -34,6 +35,8 @@ RSpec.configure do |config|
   end
 end
 
-SimpleCov.start do
-  add_filter "/spec"
-end
+# SimpleCov.start do
+#   add_filter "/spec"
+# end
+
+CodeClimate::TestReporter.start
