@@ -1,5 +1,6 @@
 # rsmart_toolbox
 
+[![Build Status](https://travis-ci.org/rSmart/rsmart_toolbox.svg?branch=master)](https://travis-ci.org/rSmart/rsmart_toolbox)
 [![Gem Version](https://badge.fury.io/rb/rsmart_toolbox.svg)](http://badge.fury.io/rb/rsmart_toolbox)
 
 Client library and command-line tools to help interact with rSmart's cloud APIs.
