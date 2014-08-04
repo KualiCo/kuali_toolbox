@@ -1,8 +1,9 @@
-# RsmartToolbox
+rsmart_toolbox
+--------------
 
-TODO: Write a gem description
+Client library and command-line tool to help interact with rSmart's cloud APIs.
 
-## Installation
+### Installation
 
 Add this line to your application's Gemfile:
 
@@ -18,13 +19,13 @@ Or install it yourself as:
 
     $ gem install rsmart_toolbox
 
-## Usage
+### Usage
 
 TODO: Write usage instructions here
 
-## Contributing
+### Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/rsmart_toolbox/fork )
+1. Fork it ( https://github.com/rSmart/rsmart_toolbox/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
