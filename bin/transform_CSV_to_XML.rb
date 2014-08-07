@@ -17,53 +17,70 @@ ETL = Rsmart::ETL
 GRM  = Rsmart::ETL::GRM
 TextParseError = Rsmart::ETL::TextParseError
 
-csv_filename = nil
-options = OpenStruct.new
-options.email_recipients = "no-reply@rsmart.com"
-@col_sep = ','
-options.xml_filename = "hrimport.xml"
-optparse = OptionParser.new do |opts|
-  opts.banner = "Usage: #{File.basename($0)} [options] csv_file"
+def self.parse_csv_command_line_options(
+    executable, args, opt={ csv_options: { headers: :first_row,
+                                           header_converters: :symbol,
+                                           skip_blanks: true,
+                                           col_sep: ",", # comma by default
+                                           quote_char: '"', # double quote by default
+                                           }
+                            } )
+  optparse = OptionParser.new do |opts|
+    opts.banner = "Usage: #{executable} [options] csv_file"
+    opts.on( '-o [xml_file_output]' ,'--output [xml_file_output]', 'The file in which the the XML data will be writen (defaults to <csv_file>.xml)') do |f|
+      opt[:xml_filename] = f
+    end
+    opts.on( '-s [separator_character]' ,'--separator [separator_character]', 'The character that separates each column of the CSV file.') do |s|
+      opt[:col_sep] = s
+    end
+    opts.on( '-q [quote_character]' ,'--quote [quote_character]', 'The character used to quote fields.') do |q|
+      opt[:quote_char] = q
+    end
+    opts.on('-e [email_recipients]', '--email [email_recipients]', 'Email recipient list that will receive job report status.') do |e|
+      opt[:email_recipients] = e
+    end
+    opts.on( '-h', '--help', 'Display this screen' ) do
+      puts opts
+      exit 1
+    end
 
-  opts.on('--email [email_recipients]', 'Email recipient list that will receive job report...') do |e|
-    options.email_recipients = e
+    opt[:csv_filename] = args[0] unless opt[:csv_filename]
+    if opt[:csv_filename].nil? || opt[:csv_filename].empty?
+      puts opts
+      exit 1
+    end
+  end
+  optparse.parse!
+
+  # construct a sensible default ouptput filename
+  unless opt[:xml_filename]
+    file_extension = File.extname opt[:csv_filename]
+    dir_name = File.dirname opt[:csv_filename]
+    base_name = File.basename opt[:csv_filename], file_extension
+    opt[:xml_filename] = "#{dir_name}/#{base_name}.xml"
   end
 
-  opts.on('--output [xml_file_output]', 'The file the XML data will be writen to... (defaults to hrimport.xml)') do |f|
-    options.xml_filename = f
+  unless opt[:email_recipients]
+    opt[:email_recipients] = "no-reply@rsmart.com"
   end
 
-  opts.on( '-h', '--help', 'Display this screen' ) do
-    puts opts
-    exit
-  end
-
-  csv_filename = ARGV[0]
-  if csv_filename.nil? || csv_filename.empty?
-    puts opts
-    exit
-  end
+  return opt
 end
-optparse.parse!
 
-csv_options = { headers: :first_row,
-                header_converters: :symbol,
-                skip_blanks: true,
-                col_sep: @col_sep,
-                }
+opt = parse_csv_command_line_options (File.basename $0), ARGF.argv
 
-CSV.open(csv_filename, csv_options) do |csv|
+CSV.open(opt[:csv_filename], opt[:csv_options]) do |csv|
   record_count = csv.readlines.count
   csv.rewind # go back to first row
 
-  File.open(options.xml_filename, 'w') do |xml_file|
+  File.open(opt[:xml_filename], 'w') do |xml_file|
     xml = Builder::XmlMarkup.new target: xml_file, indent: 2
     xml.instruct! :xml, encoding: "UTF-8"
     xml.hrmanifest "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance",
       "xsi:schemaLocation" => "https://github.com/rSmart/ce-tech-docs/tree/master/v1_0 https://raw.github.com/rSmart/ce-tech-docs/master/v1_0/hrmanifest.xsd",
       xmlns: "https://github.com/rSmart/ce-tech-docs/tree/master/v1_0",
       schemaVersion: "1.0",
-      statusEmailRecipient: options.email_recipients,
+      statusEmailRecipient: opt[:email_recipients],
       reportDate: Time.now.iso8601,
     recordCount: record_count do |hrmanifest|
       hrmanifest.records do |record|
@@ -246,6 +263,7 @@ CSV.open(csv_filename, csv_options) do |csv|
     end # hrmanifest
   end # file
 end # csv
+puts "\nXML file written to #{opt[:xml_filename]}\n\n"
 
 # validate the resulting XML file against the official XSD schema
 uri = URI 'https://raw.githubusercontent.com/rSmart/ce-tech-docs/master/hrmanifest.xsd'
@@ -259,14 +277,16 @@ Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
     end
     file.rewind
     xsd = Nokogiri::XML::Schema file
-    doc = Nokogiri::XML File.read options.xml_filename
+    doc = Nokogiri::XML File.read opt[:xml_filename]
     xml_errors = xsd.validate doc
     if xml_errors.empty?
       puts "Congratulations! The XML file passes XSD schema validation! w00t!"
     else
+      puts "The XML file does NOT pass XSD schema validation!:"
       xml_errors.each do |error|
         puts error.message
       end
+      exit 1
     end
   end # file
 end
