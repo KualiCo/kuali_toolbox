@@ -14,7 +14,7 @@ require 'time'
 require 'rsmart_toolbox/etl/grm'
 
 ETL = Rsmart::ETL
-GRM  = Rsmart::ETL::GRM
+GRM = Rsmart::ETL::GRM
 TextParseError = Rsmart::ETL::TextParseError
 
 def self.parse_csv_command_line_options(
