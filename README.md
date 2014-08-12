@@ -24,7 +24,17 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### transform_CSV_to_HR_XML
+
+```
+Usage: transform_CSV_to_HR_XML [options] csv_file
+    -o, --output [xml_file_output]   The file in which the the XML data will be writen (defaults to <csv_file>.xml)
+    -s [separator_character],        The character that separates each column of the CSV file.
+        --separator
+    -q, --quote [quote_character]    The character used to quote fields.
+    -e, --email [email_recipients]   Email recipient list that will receive job report status.
+    -h, --help                       Display this screen
+```
 
 ## Contributing
 
