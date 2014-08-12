@@ -15,5 +15,5 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 module Rsmart
-  VERSION = "0.3"
+  VERSION = "0.4"
 end
