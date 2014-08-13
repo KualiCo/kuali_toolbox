@@ -8,7 +8,12 @@ Client library and command-line tools to help interact with rSmart's cloud APIs.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+To simply install the gem and provide access to the command line tools:
+
+    $ gem install rsmart_toolbox
+
+However, if you would like to reuse the our ruby modules in your own ruby program,
+add this line to your application's Gemfile:
 
 ```ruby
 gem 'rsmart_toolbox'
@@ -17,10 +22,6 @@ gem 'rsmart_toolbox'
 And then execute:
 
     $ bundle
-
-Or install it yourself as:
-
-    $ gem install rsmart_toolbox
 
 ## Usage
 
