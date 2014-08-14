@@ -114,7 +114,7 @@ module Rsmart::ETL::GRM
 
   def self.parse_address_type_code(str, opt={})
     # TODO find real column name
-    opt[:name]         = "TODO_address_type_code" if opt[:name].nil?
+    opt[:name]         = "ADDR_TYP_CD" if opt[:name].nil?
     opt[:length]       = 3 if opt[:length].nil?
     opt[:valid_values] = /^(HM|OTH|WRK)$/i if opt[:valid_values].nil?
     return Rsmart::ETL::parse_flag str, opt
@@ -145,7 +145,7 @@ module Rsmart::ETL::GRM
 
   def self.parse_phone_type(str, opt={})
     # TODO find real column name
-    opt[:name]         = "TODO_phone_type" if opt[:name].nil?
+    opt[:name]         = "PHONE_TYP_CD" if opt[:name].nil?
     opt[:length]       = 3 if opt[:length].nil?
     opt[:valid_values] = /^(FAX|HM|MBL|OTH|WRK)$/i if opt[:valid_values].nil?
     return Rsmart::ETL::parse_flag str, opt
