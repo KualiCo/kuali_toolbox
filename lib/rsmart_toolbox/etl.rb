@@ -101,9 +101,13 @@ module Rsmart::ETL
                 :undef => :replace, :replace => "" )
   end
 
-  # Matches MRI CSV specification:
+  # Matches the MRI CSV specification:
   # The header String is downcased, spaces are replaced with underscores,
   # non-word characters are dropped, and finally to_sym() is called.
+  # @param [String] str the String to be symbolized.
+  # @return [Symbol] String is downcased, spaces are replaced with underscores,
+  #   non-word characters are dropped
+  # @raise [ArgumentError] if str is nil or empty.
   def self.to_symbol(str)
     raise ArgumentError, "Illegal symbol name: '#{str}'" if str.nil? || str.empty?
     encode( str.downcase.gsub(/\s+/, "_").gsub(/\W+/, "") ).to_sym
