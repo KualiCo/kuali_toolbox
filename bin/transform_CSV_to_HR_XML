@@ -8,7 +8,7 @@ require 'csv'
 require 'net/http'
 require 'nokogiri'
 require 'optparse'
-require 'ostruct'
+require 'rest_client'
 require 'tempfile'
 require 'time'
 require 'rsmart_toolbox/etl/grm'
@@ -17,7 +17,7 @@ ETL = Rsmart::ETL
 GRM = Rsmart::ETL::GRM
 TextParseError = Rsmart::ETL::TextParseError
 
-def self.parse_csv_command_line_options(
+def self.parse_command_line_options(
     executable, args, opt={ csv_options: { headers: :first_row,
                                            header_converters: :symbol,
                                            skip_blanks: true,
@@ -30,14 +30,23 @@ def self.parse_csv_command_line_options(
     opts.on( '-o [xml_file_output]' ,'--output [xml_file_output]', 'The file in which the the XML data will be writen (defaults to <csv_file>.xml)') do |f|
       opt[:xml_filename] = f
     end
-    opts.on( '-s [separator_character]' ,'--separator [separator_character]', 'The character that separates each column of the CSV file.') do |s|
+    opts.on( '-s [separator_character]' ,'--separator [separator_character]', 'The character that separates each column of the CSV file.' ) do |s|
       opt[:col_sep] = s
     end
-    opts.on( '-q [quote_character]' ,'--quote [quote_character]', 'The character used to quote fields.') do |q|
+    opts.on( '-q [quote_character]' ,'--quote [quote_character]', 'The character used to quote fields.' ) do |q|
       opt[:quote_char] = q
     end
-    opts.on('-e [email_recipients]', '--email [email_recipients]', 'Email recipient list that will receive job report status.') do |e|
+    opts.on( '-e [email_recipients]', '--email [email_recipients]', 'Email recipient list that will receive job report status.' ) do |e|
       opt[:email_recipients] = e
+    end
+    opts.on( '-u [username]', '--username [username]', 'The username used to authenticate to the HR REST API.' ) do |u|
+      opt[:username] = u
+    end
+    opts.on( '-p [password]', '--password [password]', 'The password used to authenticate to the HR REST API.' ) do |p|
+      opt[:password] = p
+    end
+    opts.on( '-l [url]', '--url [url]', 'The full URL of the HR REST API; e.g. https://localhost/kc-dev/hr-import/hrimport/import' ) do |l|
+      opt[:url] = l
     end
     opts.on( '-h', '--help', 'Display this screen' ) do
       puts opts
@@ -64,10 +73,16 @@ def self.parse_csv_command_line_options(
     opt[:email_recipients] = "no-reply@rsmart.com"
   end
 
+  if opt[:url]
+    unless opt[:username] && opt[:password]
+      raise ArgumentError, "Username and password are required when POSTing to a URL!"
+    end
+  end
+
   return opt
 end
 
-opt = parse_csv_command_line_options (File.basename $0), ARGF.argv
+opt = parse_command_line_options (File.basename $0), ARGF.argv
 
 CSV.open(opt[:csv_filename], opt[:csv_options]) do |csv|
   record_count = csv.readlines.count
@@ -261,7 +276,7 @@ CSV.open(opt[:csv_filename], opt[:csv_options]) do |csv|
         end # row
       end # record
     end # hrmanifest
-  end # file
+  end # xml_file
 end # csv
 puts "\nXML file written to #{opt[:xml_filename]}\n\n"
 
@@ -280,13 +295,20 @@ Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
     doc = Nokogiri::XML File.read opt[:xml_filename]
     xml_errors = xsd.validate doc
     if xml_errors.empty?
-      puts "Congratulations! The XML file passes XSD schema validation! w00t!"
+      puts "Congratulations! The XML file passes XSD schema validation! w00t!\n\n"
     else
-      puts "The XML file does NOT pass XSD schema validation!:"
+      puts "Sorry, the XML file does NOT pass XSD schema validation!:"
       xml_errors.each do |error|
         puts error.message
       end
       exit 1
     end
   end # file
+end
+
+# POST the XML file to the server if opt[:url]
+if opt[:url]
+  resource = RestClient::Resource.new( opt[:url], opt[:username], opt[:password] )
+  resource.post file: File.new(opt[:xml_filename], 'rt'), content_type: 'multipart/form-data', multipart: true
+  puts "\n"
 end
