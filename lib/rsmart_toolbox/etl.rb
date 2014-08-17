@@ -21,7 +21,8 @@ module Rsmart::ETL
   class TextParseError < StandardError
   end
 
-  # Responds to String or Exception.
+  # @return [Exception] an Exception with a message formatted with $INPUT_LINE_NUMBER.
+  # @param [String, Exception] e the error to handle
   def self.error(e)
     if e.kind_of? String
       # default to TextParseError
@@ -33,7 +34,8 @@ module Rsmart::ETL
     raise ArgumentError, "Unsupported error type: #{e.class}"
   end
 
-  # Responds to String or Exception.
+  # @return [Exception] an Exception with a message formatted with $INPUT_LINE_NUMBER.
+  # @param [String, Exception] e the warning to handle
   def self.warning(e)
     if e.kind_of? String
       # default to TextParseError
@@ -45,7 +47,14 @@ module Rsmart::ETL
     raise ArgumentError, "Unsupported error type: #{e.class}"
   end
 
-  # Test to see if subject is a member of valid_values Array
+  # @param [String, #match] subject used for validity checking.
+  # @param [Array<Object>, Regexp] valid_values all of the possible valid values.
+  # @option opt [Boolean] :case_sensitive performs case sensitive matching
+  # @return [Boolean] true if the subject matches valid_values.
+  #   FYI valid_values must respond to #casecmp.
+  # @raise [ArgumentError] if there are any problems with the input parameters.
+  # @raise [ArgumentError] case sensitive matching only works for objects
+  #   that respond to #casecmp; primarily String objects.
   def self.valid_value(subject, valid_values, opt={})
     raise ArgumentError, "valid_values must not be nil!" if valid_values.nil?
     if valid_values.kind_of? Regexp
@@ -54,7 +63,7 @@ module Rsmart::ETL
     if valid_values.kind_of? Array
       raise ArgumentError, "valid_values must have at least one element!" unless valid_values.length > 0
       if opt[:case_sensitive] == false # case insensitive comparison requested
-        raise ArgumentError, "case_sensitive only supported for Strings!" unless subject.kind_of?(String)
+        raise ArgumentError, "Object must respond to #casecmp" unless subject.respond_to? 'casecmp'
         valid_values.each do |valid_value|
           return true if valid_value.casecmp(subject) == 0
         end
