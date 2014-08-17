@@ -52,7 +52,7 @@ module Rsmart::ETL
   # @option opt [Boolean] :case_sensitive performs case sensitive matching
   # @return [Boolean] true if the subject matches valid_values.
   #   FYI valid_values must respond to #casecmp.
-  # @raise [ArgumentError] if there are any problems with the input parameters.
+  # @raise [ArgumentError] if valid_values is nil or empty.
   # @raise [ArgumentError] case sensitive matching only works for objects
   #   that respond to #casecmp; primarily String objects.
   def self.valid_value(subject, valid_values, opt={})
@@ -73,6 +73,10 @@ module Rsmart::ETL
     return false
   end
 
+  # @param [String] str String to be matched against well known boolean patterns.
+  # @option opt [Boolean] :default the default return value if str is empty.
+  # @return [Boolean] the result of matching the str input against well known boolean patterns.
+  # @raise [TextParseError] if none of the known boolean patterns could be matched.
   def self.parse_boolean(str, opt={})
     return true  if str == true
     return false if str == false
