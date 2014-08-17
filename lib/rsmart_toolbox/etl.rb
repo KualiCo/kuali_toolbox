@@ -92,8 +92,10 @@ module Rsmart::ETL
     raise Rsmart::ETL::error TextParseError.new "invalid value for Boolean: '#{str}'"
   end
 
-  # Simply here to help ensure we consistently apply the same encoding options.
-  def self.encode(str, opt={} )
+  # @param [String] str the String to be encoded and invalid characters replaced with valid characters.
+  # @option opt [String] :encoding the character encoding to use.
+  # @return [String] the result of encoding the String and replacing invalid characters with valid characters.
+  def self.encode(str, opt={ encoding: "UTF-8" } )
     opt[:encoding] = "UTF-8" if opt[:encoding].nil?
     str.encode( opt[:encoding], :invalid => :replace,
                 :undef => :replace, :replace => "" )
