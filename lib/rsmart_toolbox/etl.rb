@@ -113,7 +113,13 @@ module Rsmart::ETL
     encode( str.downcase.gsub(/\s+/, "_").gsub(/\W+/, "") ).to_sym
   end
 
-  # DRY up some common string manipulation
+  # Mutates insert_str and values_str with column_name and value respectively.
+  # Proper SQL value quoting will be performed based on object type.
+  # @param [String] insert_str the left side of the insert statement (i.e. columns)
+  # @param [String] column_name the column name to append to insert_str.
+  # @param [String] values_str the right side of the insert statement (i.e. values)
+  # @param [Object] value the value to append to values_str. Must respond to #to_s.
+  # @return [nil] the return value has no meaning.
   def self.mutate_sql_stmt!(insert_str, column_name, values_str, value)
     insert_str.concat "#{column_name.upcase},"
     # TODO what are all of the valid types that should not be quoted?
@@ -122,6 +128,7 @@ module Rsmart::ETL
     else
       values_str.concat "'#{value}',"
     end
+    return nil
   end
 
   def self.escape_single_quotes(str)
