@@ -231,6 +231,12 @@ module Rsmart::ETL
     mutate_sql_stmt! insert_str, opt[:name], values_str, i
   end
 
+  # Parse a Float from a String. Note the behavioral difference versus #to_f.
+  # @param [Hash] opt options Hash will be passed through to #parse_string.
+  # @return [Float, nil] the parsed Float. nil or empty inputs will return nil by default.
+  # @example Unlike #to_f, nil or empty inputs will return nil by default
+  #   nil == parse_float(nil) && nil == parse_float('') && 0.0 != parse_float(nil)
+  # @see parse_string
   def self.parse_float(str, opt={})
     s = parse_string str, opt
     if s.empty?
