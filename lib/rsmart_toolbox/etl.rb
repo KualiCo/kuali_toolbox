@@ -201,6 +201,7 @@ module Rsmart::ETL
   end
 
   # Parse an Integer from a String. Note the behavioral difference versus #to_i.
+  # @param [String] str the String to be parsed.
   # @param [Hash] opt options Hash will be passed through to #parse_string.
   # @return [Integer, nil] the parsed Integer. nil or empty inputs will return nil by default.
   # @example Unlike #to_i, nil or empty inputs will return nil by default
@@ -232,6 +233,7 @@ module Rsmart::ETL
   end
 
   # Parse a Float from a String. Note the behavioral difference versus #to_f.
+  # @param [String] str the String to be parsed.
   # @param [Hash] opt options Hash will be passed through to #parse_string.
   # @return [Float, nil] the parsed Float. nil or empty inputs will return nil by default.
   # @example Unlike #to_f, nil or empty inputs will return nil by default
@@ -246,9 +248,14 @@ module Rsmart::ETL
     end
   end
 
-  # Useful for parsing "flag" like values. Always returns upcase for consistency.
-  # Assumes :strict :length of 1 by default.
-  def self.parse_flag(str, opt={})
+  # Useful for parsing "flag" like values; i.e. usually single characters.
+  # @param [String] str the String to be parsed.
+  # @param [Hash] opt options Hash will be passed through to #parse_string.
+  # @option opt [Integer] :length the maximum supported length of the field.
+  # @option opt [Boolean] :upcase if true upcase the results.
+  # @return [String] the parsed "flag".
+  # @see parse_string
+  def self.parse_flag(str, opt={ length: 1, upcase: true })
     opt[:length] = 1 if opt[:length].nil?
     opt[:upcase] = true if opt[:upcase].nil?
     retval = parse_string str, opt
