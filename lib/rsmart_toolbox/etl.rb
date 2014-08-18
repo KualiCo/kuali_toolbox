@@ -131,6 +131,10 @@ module Rsmart::ETL
     return nil
   end
 
+  # Prepares a String for a SQL statement where single quotes need to be escaped.
+  # @param [String] str the String to be escaped.
+  # @return [String, nil] the resulting String with single quotes escaped with a backslash.
+  #   If a nil is passed, nil is returned.
   def self.escape_single_quotes(str)
     if str.nil?
       return nil
@@ -138,8 +142,25 @@ module Rsmart::ETL
     return str.to_s.gsub("'", "\\\\'")
   end
 
-  def self.parse_string(str, opt={})
-    opt[:strict]   = true if opt[:strict].nil?
+  # @param [String] str the String to be parsed.
+  # @option opt [String] :default the default return value if str is empty.
+  # @option opt [Boolean] :escape_single_quotes escape single quote characters.
+  # @option opt [Integer] :length raise a TextParseError if str.length > :length.
+  # @option opt [String] :name the name of the field being parsed.
+  # @option opt [Boolean] :required raise a TextParseError if str is empty.
+  # @option opt [Boolean] :strict strict length checking will produce errors instead of warnings.
+  # @option opt [Array<Object>, Regexp] :valid_values all of the possible valid values.
+  # @return [String] the parsed results. nil or empty inputs will return the empty String by default(i.e. '').
+  # @raise [TextParseError] if the field is :required and found to be empty.
+  # @raise [TextParseError] if str.length > :length && :strict
+  # @raise [TextParseError] if str does not match :valid_values
+  # @example
+  #   '' == parse_string(nil) && '' == parse_string('')
+  # @see valid_value
+  # @see escape_single_quotes
+  def self.parse_string(str, opt={ strict: true, required: false, escape_single_quotes: true })
+    opt[:strict] = true if opt[:strict].nil?
+    opt[:escape_single_quotes] = true if opt[:escape_single_quotes].nil?
     retval = encode str.to_s.strip
     if opt[:required] && retval.empty?
       raise Rsmart::ETL::error TextParseError.new "Required data element '#{opt[:name]}' not found: '#{str}'"
@@ -157,7 +178,10 @@ module Rsmart::ETL
     if opt[:valid_values] && ! valid_value(retval, opt[:valid_values], opt)
       raise Rsmart::ETL::error TextParseError.new "Illegal #{opt[:name]}: value '#{str}' not found in: #{opt[:valid_values]}"
     end
-    return escape_single_quotes retval
+    if opt[:escape_single_quotes]
+      retval = escape_single_quotes retval
+    end
+    return retval
   end
 
   def self.parse_string!(row, insert_str, values_str, opt={})
