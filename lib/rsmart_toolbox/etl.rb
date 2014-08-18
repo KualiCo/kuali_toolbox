@@ -188,6 +188,7 @@ module Rsmart::ETL
   # @param [CSV::Row] row the CSV Row being parsed
   # @param [String] insert_str the left side of the insert statement (i.e. columns)
   # @param [String] values_str the right side of the insert statement (i.e. values)
+  # @param [Hash] opt options Hash will be passed through to #parse_string.
   # @option opt [String] :name the name of the field being parsed. Required.
   # @return [nil] the return value has no meaning.
   # @raise [ArgumentError] :name is required.
@@ -214,6 +215,16 @@ module Rsmart::ETL
     end
   end
 
+  # Helper method which finds the value by column :name and mutates the SQL statement accordingly.
+  # @param [CSV::Row] row the CSV Row being parsed
+  # @param [String] insert_str the left side of the insert statement (i.e. columns)
+  # @param [String] values_str the right side of the insert statement (i.e. values)
+  # @param [Hash] opt options Hash will be passed through to #parse_integer.
+  # @option opt [String] :name the name of the field being parsed. Required.
+  # @return [nil] the return value has no meaning.
+  # @raise [ArgumentError] :name is required.
+  # @see parse_integer
+  # @see mutate_sql_stmt!
   def self.parse_integer!(row, insert_str, values_str, opt={})
     raise ArgumentError, "opt[:name] is required!" unless opt[:name]
     i = parse_integer( row[ to_symbol( opt[:name] ) ], opt )
