@@ -21,8 +21,8 @@ module Rsmart::ETL
   class TextParseError < StandardError
   end
 
-  # @return [Exception] an Exception with a message formatted with $INPUT_LINE_NUMBER.
   # @param [String, Exception] e the error to handle
+  # @return [Exception] an Exception with a message formatted with $INPUT_LINE_NUMBER.
   def self.error(e)
     if e.kind_of? String
       # default to TextParseError
@@ -34,8 +34,8 @@ module Rsmart::ETL
     raise ArgumentError, "Unsupported error type: #{e.class}"
   end
 
-  # @return [Exception] an Exception with a message formatted with $INPUT_LINE_NUMBER.
   # @param [String, Exception] e the warning to handle
+  # @return [Exception] an Exception with a message formatted with $INPUT_LINE_NUMBER.
   def self.warning(e)
     if e.kind_of? String
       # default to TextParseError
@@ -119,7 +119,7 @@ module Rsmart::ETL
   # @param [String] column_name the column name to append to insert_str.
   # @param [String] values_str the right side of the insert statement (i.e. values)
   # @param [Object] value the value to append to values_str. Must respond to #to_s.
-  # @return [nil] the return value has no meaning.
+  # @return [void]
   def self.mutate_sql_stmt!(insert_str, column_name, values_str, value)
     insert_str.concat "#{column_name.upcase},"
     # TODO what are all of the valid types that should not be quoted?
@@ -190,7 +190,7 @@ module Rsmart::ETL
   # @param [String] values_str the right side of the insert statement (i.e. values)
   # @param [Hash] opt options Hash will be passed through to #parse_string.
   # @option opt [String] :name the name of the field being parsed. Required.
-  # @return [nil] the return value has no meaning.
+  # @return [void]
   # @raise [ArgumentError] :name is required.
   # @see parse_string
   # @see mutate_sql_stmt!
@@ -200,7 +200,8 @@ module Rsmart::ETL
     mutate_sql_stmt! insert_str, opt[:name], values_str, str
   end
 
-  # Parse an Integer from a String. Note the behavioral difference versus #to_i.
+  # Parse an Integer from a String.
+  # @note Note the behavioral difference versus #to_i.
   # @param [String] str the String to be parsed.
   # @param [Hash] opt options Hash will be passed through to #parse_string.
   # @return [Integer, nil] the parsed Integer. nil or empty inputs will return nil by default.
@@ -222,7 +223,7 @@ module Rsmart::ETL
   # @param [String] values_str the right side of the insert statement (i.e. values)
   # @param [Hash] opt options Hash will be passed through to #parse_integer.
   # @option opt [String] :name the name of the field being parsed. Required.
-  # @return [nil] the return value has no meaning.
+  # @return [void]
   # @raise [ArgumentError] :name is required.
   # @see parse_integer
   # @see mutate_sql_stmt!
@@ -232,7 +233,8 @@ module Rsmart::ETL
     mutate_sql_stmt! insert_str, opt[:name], values_str, i
   end
 
-  # Parse a Float from a String. Note the behavioral difference versus #to_f.
+  # Parse a Float from a String.
+  # @note Note the behavioral difference versus #to_f.
   # @param [String] str the String to be parsed.
   # @param [Hash] opt options Hash will be passed through to #parse_string.
   # @return [Float, nil] the parsed Float. nil or empty inputs will return nil by default.
@@ -283,12 +285,21 @@ module Rsmart::ETL
   end
 
   # Parse common command line options for CSV --> SQL transformations.
+  # @param [String] executable the name of the script from which we are executing. See example.
+  # @param [Array<String>] args the command line args.
+  # @option opt [String] :csv_filename the input file from which the CSV will be read.
+  #   Defaults to the first element of args Array.
+  # @option opt [String] :sql_filename the output file to which the SQL will be written.
+  # @option opt [Hash] :csv_options the options that will be used by the CSV parser.
+  # @return [Hash] a Hash containing the parsed command line results.
+  # @example The most common usage:
+  #   opt = Rsmart::ETL.parse_csv_command_line_options (File.basename $0), ARGF.argv
   def self.parse_csv_command_line_options(
       executable, args, opt={ csv_options: { headers: :first_row,
                                              header_converters: :symbol,
                                              skip_blanks: true,
-                                             col_sep: ",", # comma by default
-                                             quote_char: '"', # double quote by default
+                                             col_sep: ",",
+                                             quote_char: '"'
                                              }
                               } )
     optparse = OptionParser.new do |opts|
@@ -297,10 +308,10 @@ module Rsmart::ETL
         opt[:sql_filename] = f
       end
       opts.on( '-s [separator_character]' ,'--separator [separator_character]', 'The character that separates each column of the CSV file.') do |s|
-        opt[:col_sep] = s
+        opt[:csv_options][:col_sep] = s
       end
       opts.on( '-q [quote_character]' ,'--quote [quote_character]', 'The character used to quote fields.') do |q|
-        opt[:quote_char] = q
+        opt[:csv_options][:quote_char] = q
       end
       opts.on( '-h', '--help', 'Display this screen' ) do
         puts opts
