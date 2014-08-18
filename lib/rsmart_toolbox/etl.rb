@@ -143,10 +143,10 @@ module Rsmart::ETL
   end
 
   # @param [String] str the String to be parsed.
-  # @option opt [String] :default the default return value if str is empty.
+  # @option opt [String, #to_s] :default the default return value if str is empty. Must respond to #to_s
   # @option opt [Boolean] :escape_single_quotes escape single quote characters.
   # @option opt [Integer] :length raise a TextParseError if str.length > :length.
-  # @option opt [String] :name the name of the field being parsed.
+  # @option opt [String] :name the name of the field being parsed. Used only for error handling.
   # @option opt [Boolean] :required raise a TextParseError if str is empty.
   # @option opt [Boolean] :strict strict length checking will produce errors instead of warnings.
   # @option opt [Array<Object>, Regexp] :valid_values all of the possible valid values.
@@ -154,7 +154,7 @@ module Rsmart::ETL
   # @raise [TextParseError] if the field is :required and found to be empty.
   # @raise [TextParseError] if str.length > :length && :strict
   # @raise [TextParseError] if str does not match :valid_values
-  # @example
+  # @example nil or empty inputs will return the empty String by default
   #   '' == parse_string(nil) && '' == parse_string('')
   # @see valid_value
   # @see escape_single_quotes
@@ -166,7 +166,7 @@ module Rsmart::ETL
       raise Rsmart::ETL::error TextParseError.new "Required data element '#{opt[:name]}' not found: '#{str}'"
     end
     if opt[:default] && retval.empty?
-      retval = opt[:default]
+      retval = opt[:default].to_s
     end
     if opt[:length] && retval.length > opt[:length].to_i
       detail = "#{opt[:name]}.length > #{opt[:length]}: '#{str}'-->'#{str[0..(opt[:length] - 1)]}'"
@@ -190,6 +190,12 @@ module Rsmart::ETL
     mutate_sql_stmt! insert_str, opt[:name], values_str, str
   end
 
+  # Parse an Integer from a String. Note the behavioral difference versus #to_i.
+  # @param [Hash] opt options Hash will be passed through to #parse_string.
+  # @return [Integer, nil] the parsed Integer. nil or empty inputs will return nil by default.
+  # @example Unlike #to_i, nil or empty inputs will return nil by default
+  #   nil == parse_integer(nil) && nil == parse_integer('') && 0 != parse_integer(nil)
+  # @see parse_string
   def self.parse_integer(str, opt={})
     s = parse_string str, opt
     if s.empty?
