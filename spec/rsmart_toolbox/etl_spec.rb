@@ -342,7 +342,7 @@ RSpec.describe "Rsmart::ETL" do
     it "Modifies the insert_str and values_str based on a CSV::Row match" do
       insert_str = ""; values_str = "";
       row = CSV::Row.new(['actv_ind'.to_sym], ['Y'], true)
-      ETL.parse_actv_ind!(row, insert_str, values_str)
+      GRM.parse_actv_ind!(row, insert_str, values_str)
       expect(insert_str).to eq("ACTV_IND,")
       expect(values_str).to eq("'Y',")
     end
@@ -350,7 +350,7 @@ RSpec.describe "Rsmart::ETL" do
     it "allows for lowercase input Strings" do
       insert_str = ""; values_str = "";
       row = CSV::Row.new(['actv_ind'.to_sym], ['n'], true)
-      ETL.parse_actv_ind!(row, insert_str, values_str)
+      GRM.parse_actv_ind!(row, insert_str, values_str)
       expect(insert_str).to eq("ACTV_IND,")
       expect(values_str).to eq("'N',")
     end
@@ -358,12 +358,12 @@ RSpec.describe "Rsmart::ETL" do
     it "Returns a default value of 'Y' and does not raise an TextParseError if nil or empty" do
       insert_str = ""; values_str = "";
       row = CSV::Row.new(['actv_ind'.to_sym], [nil], true)
-      expect { ETL.parse_actv_ind!(row, insert_str, values_str) }.not_to raise_error
+      expect { GRM.parse_actv_ind!(row, insert_str, values_str) }.not_to raise_error
       expect(insert_str).to eq("ACTV_IND,")
       expect(values_str).to eq("'Y',")
       insert_str = ""; values_str = "";
       row = CSV::Row.new(['actv_ind'.to_sym], [''], true)
-      expect { ETL.parse_actv_ind!(row, insert_str, values_str) }.not_to raise_error
+      expect { GRM.parse_actv_ind!(row, insert_str, values_str) }.not_to raise_error
       expect(insert_str).to eq("ACTV_IND,")
       expect(values_str).to eq("'Y',")
     end
@@ -371,13 +371,13 @@ RSpec.describe "Rsmart::ETL" do
     it "Raises an TextParseError if not a valid 'Y/N' value" do
       insert_str = ""; values_str = "";
       row = CSV::Row.new(['actv_ind'.to_sym], ["Q"], true)
-      expect { ETL.parse_actv_ind!(row, insert_str, values_str) }.to raise_error(TextParseError)
+      expect { GRM.parse_actv_ind!(row, insert_str, values_str) }.to raise_error(TextParseError)
     end
 
     it "Raises an TextParseError if length exceeds 1 characters" do
       insert_str = ""; values_str = "";
       row = CSV::Row.new(['actv_ind'.to_sym], ["x" * 2], true)
-      expect { ETL.parse_actv_ind!(row, insert_str, values_str) }.to raise_error(TextParseError)
+      expect { GRM.parse_actv_ind!(row, insert_str, values_str) }.to raise_error(TextParseError)
     end
   end
 

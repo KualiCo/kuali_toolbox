@@ -265,25 +265,6 @@ module Rsmart::ETL
     return retval
   end
 
-  # Designed specifically for actv_ind, but could be used on *any*
-  # fields that matches /^(Y|N)$/i.
-  def self.parse_actv_ind(str, opt={})
-    #   `ACTV_IND` varchar(1) COLLATE utf8_bin DEFAULT 'Y',
-    opt[:name]         = "actv_ind" if opt[:name].nil?
-    opt[:default]      = "Y" if opt[:default].nil?
-    opt[:valid_values] = /^(Y|N)$/i if opt[:valid_values].nil?
-    return parse_flag str, opt
-  end
-
-  # Designed specifically for actv_ind, but could be used on *any*
-  # fields that matches /^(Y|N)$/i.
-  def self.parse_actv_ind!(row, insert_str, values_str, opt={})
-    #   `ACTV_IND` varchar(1) COLLATE utf8_bin DEFAULT 'Y',
-    opt[:name] = "actv_ind" if opt[:name].nil?
-    actv_ind = Rsmart::ETL::parse_actv_ind row[ to_symbol( opt[:name] ) ]
-    Rsmart::ETL::mutate_sql_stmt! insert_str, opt[:name], values_str, actv_ind
-  end
-
   # Parse common command line options for CSV --> SQL transformations.
   # @param [String] executable the name of the script from which we are executing. See example.
   # @param [Array<String>] args the command line args.
