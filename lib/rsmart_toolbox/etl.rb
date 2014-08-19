@@ -18,11 +18,14 @@ require "rsmart_toolbox"
 
 module Rsmart::ETL
 
+  # Any text parsing related errors will use this Exception.
   class TextParseError < StandardError
   end
 
+  # Prepares an Exception for consistent error handling.
   # @param [String, Exception] e the error to handle
   # @return [Exception] an Exception with a message formatted with $INPUT_LINE_NUMBER.
+  # @raise [ArgumentError] if an invalid argument is passed.
   def self.error(e)
     if e.kind_of? String
       # default to TextParseError
@@ -34,8 +37,10 @@ module Rsmart::ETL
     raise ArgumentError, "Unsupported error type: #{e.class}"
   end
 
+  # Prepares an Exception for consistent warning handling.
   # @param [String, Exception] e the warning to handle
   # @return [Exception] an Exception with a message formatted with $INPUT_LINE_NUMBER.
+  # @raise [ArgumentError] if an invalid argument is passed.
   def self.warning(e)
     if e.kind_of? String
       # default to TextParseError
@@ -47,6 +52,7 @@ module Rsmart::ETL
     raise ArgumentError, "Unsupported error type: #{e.class}"
   end
 
+  # Tests whether the subject matches one of the valid values.
   # @param [String, #match] subject used for validity checking.
   # @param [Array<Object>, Regexp] valid_values all of the possible valid values.
   # @option opt [Boolean] :case_sensitive performs case sensitive matching
@@ -73,6 +79,7 @@ module Rsmart::ETL
     return false
   end
 
+  # Matches the input against a set of well known boolean patterns.
   # @param [String] str String to be matched against well known boolean patterns.
   # @option opt [Boolean] :default the default return value if str is empty.
   # @return [Boolean] the result of matching the str input against well known boolean patterns.
@@ -92,9 +99,11 @@ module Rsmart::ETL
     raise Rsmart::ETL::error TextParseError.new "invalid value for Boolean: '#{str}'"
   end
 
+  # Encodes the input String and replaces invalid or undefined characters.
   # @param [String] str the String to be encoded and invalid characters replaced with valid characters.
   # @option opt [String] :encoding the character encoding to use.
   # @return [String] the result of encoding the String and replacing invalid characters with valid characters.
+  # @see String#encode
   def self.encode(str, opt={ encoding: "UTF-8" } )
     opt[:encoding] = "UTF-8" if opt[:encoding].nil?
     str.encode( opt[:encoding], :invalid => :replace,
@@ -113,7 +122,7 @@ module Rsmart::ETL
     encode( str.downcase.gsub(/\s+/, "_").gsub(/\W+/, "") ).to_sym
   end
 
-  # Mutates insert_str and values_str with column_name and value respectively.
+  # Mutates two sides of a SQL insert statement: insert_str and values_str with column_name and value respectively.
   # Proper SQL value quoting will be performed based on object type.
   # @param [String] insert_str the left side of the insert statement (i.e. columns)
   # @param [String] column_name the column name to append to insert_str.
@@ -142,6 +151,8 @@ module Rsmart::ETL
     return str.to_s.gsub("'", "\\\\'")
   end
 
+  # Parses a string using common parsing behavior with options. This method forms the foundation
+  # of all the other parsing methods.
   # @param [String] str the String to be parsed.
   # @option opt [String, #to_s] :default the default return value if str is empty. Must respond to #to_s
   # @option opt [Boolean] :escape_single_quotes escape single quote characters.
