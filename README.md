@@ -21,7 +21,7 @@ gem 'rsmart_toolbox'
 
 And then execute:
 
-    $ bundle
+    $ bundle install
 
 ## Usage
 

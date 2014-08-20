@@ -15,5 +15,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 module Rsmart
+  # The gem version number.
   VERSION = "0.7"
 end
