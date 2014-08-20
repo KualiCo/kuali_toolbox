@@ -16,6 +16,7 @@
 
 require "rsmart_toolbox"
 
+# rSmart extract, transform and load methods.
 module Rsmart::ETL
 
   # Any text parsing related errors will use this Exception.
