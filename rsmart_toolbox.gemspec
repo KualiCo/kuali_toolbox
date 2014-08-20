@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["lspeelmon@rsmart.com"]
   spec.summary       = %q{Client library and command-line tools to help interact with rSmart's cloud APIs.}
   # spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = "https://github.com/rSmart/rsmart_toolbox"
+  spec.homepage      = "http://rsmart.github.io/rsmart_toolbox/"
   spec.metadata      = { "issue_tracker" => "https://github.com/rSmart/rsmart_toolbox/issues" }
   spec.license       = "AGPL-3.0"
 
