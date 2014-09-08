@@ -69,10 +69,10 @@ module Rsmart::ETL::GRM
   # @param opt [Hash] options Hash will be passed through to {Rsmart::ETL.parse_string!}.
   # @return [void]
   # @see parse_string!
-  def self.parse_sponsor_code!(row, insert_str, values_str, opt={ name: 'SPONSOR_CODE', required: true, length: 6 })
+  def self.parse_sponsor_code!(row, insert_str, values_str, opt={ name: 'SPONSOR_CODE', required: false, length: 6 })
     #   `SPONSOR_CODE` char(6) COLLATE utf8_bin NOT NULL DEFAULT '',
     opt[:name]     = "SPONSOR_CODE" if opt[:name].nil?
-    opt[:required] = true if opt[:required].nil?
+    opt[:required] = false if opt[:required].nil?
     opt[:length]   = 6 if opt[:length].nil?
     Rsmart::ETL::parse_string! row, insert_str, values_str, opt
   end

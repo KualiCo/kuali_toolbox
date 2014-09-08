@@ -111,12 +111,12 @@ RSpec.describe "Rsmart::ETL::GRM" do
       expect(values_str).to eq("'000001',")
     end
 
-    it "Raises an TextParseError if nil or empty" do
+    it "does not raise a TextParseError if nil or empty" do
       insert_str = ""; values_str = "";
       row = CSV::Row.new(['sponsor_code'.to_sym], [nil], true)
-      expect { GRM.parse_sponsor_code!(row, insert_str, values_str) }.to raise_error(TextParseError)
+      expect { GRM.parse_sponsor_code!(row, insert_str, values_str) }.not_to raise_error
       row = CSV::Row.new(['sponsor_code'.to_sym], [""], true)
-      expect { GRM.parse_sponsor_code!(row, insert_str, values_str) }.to raise_error(TextParseError)
+      expect { GRM.parse_sponsor_code!(row, insert_str, values_str) }.not_to raise_error
     end
 
     it "Raises an TextParseError if length exceeds 6 characters" do
