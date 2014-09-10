@@ -105,7 +105,7 @@ CSV.open(opt[:csv_filename], opt[:csv_options]) do |csv|
             principalName: GRM.parse_principal_name( row[:prncpl_nm] ) do |record|
               record.affiliations do |affiliations|
                 aff = {}
-                afltn_typ_cd = ETL.parse_string row[:afltn_typ_cd], length: 40
+                afltn_typ_cd = ETL.parse_string row[:afltn_typ_cd], name: 'AFLTN_TYP_CD', length: 40, required: true
                 campus       = ETL.parse_string row[:campus_cd], length: 2
                 aff[:affiliationType] = afltn_typ_cd unless afltn_typ_cd.empty?
                 aff[:campus]          = campus unless campus.empty?
