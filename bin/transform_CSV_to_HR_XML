@@ -129,6 +129,30 @@ CSV.open(opt[:csv_filename], opt[:csv_options]) do |csv|
                   affiliation.employment emp
                 end
               end # affiliations
+
+              address         = {}
+              addr_typ_cd     = GRM.parse_address_type_code( row[:addr_typ_cd] )
+              addr_line_1     = ETL.parse_string( row[:addr_line_1], name: 'ADDR_LINE_1', length: 45 )
+              addr_line_2     = ETL.parse_string( row[:addr_line_2], name: 'ADDR_LINE_2', length: 45 )
+              addr_line_3     = ETL.parse_string( row[:addr_line_3], name: 'ADDR_LINE_3', length: 45 )
+              city            = ETL.parse_string( row[:city], name: 'CITY', length: 30 )
+              state_pvc_cd    = ETL.parse_string( row[:state_pvc_cd], name: 'STATE_PVC_CD', length: 2 )
+              postal_cd       = ETL.parse_string( row[:postal_cd], name: 'POSTAL_CD', length: 20 )
+              postal_cntry_cd = ETL.parse_string( row[:postal_cntry_cd], name: 'POSTAL_CNTRY_CD', length: 2 )
+              address[:addressTypeCode] = addr_typ_cd unless addr_typ_cd.empty?
+              address[:addressLine1]    = addr_line_1 unless addr_line_1.empty?
+              address[:addressLine2]    = addr_line_2 unless addr_line_2.empty?
+              address[:addressLine3]    = addr_line_3 unless addr_line_3.empty?
+              address[:city]            = city unless city.empty?
+              address[:stateOrProvince] = state_pvc_cd unless state_pvc_cd.empty?
+              address[:postalCode]      = postal_cd unless postal_cd.empty?
+              address[:country]         = postal_cntry_cd unless postal_cntry_cd.empty?
+              unless address.empty?
+                record.addresses do |addresses|
+                  addresses.address address
+                end # addresses
+              end
+
               record.names do |names|
                 nm = {}
                 nm_typ_cd = GRM.parse_name_code row[:nm_typ_cd]
@@ -155,11 +179,11 @@ CSV.open(opt[:csv_filename], opt[:csv_options]) do |csv|
               phone_typ_cd    = GRM.parse_phone_type   row[:phone_typ_cd]
               phone_nbr       = GRM.parse_phone_number row[:phone_nbr]
               phone_extn_nbr  = ETL.parse_string       row[:phone_extn_nbr],  length: 8, name: 'PHONE_EXTN_NBR'
-              postal_cntry_cd = ETL.parse_string       row[:postal_cntry_cd], length: 2, name: 'POSTAL_CNTRY_CD'
+              phone_cntry_cd  = ETL.parse_string       row[:phone_cntry_cd], length: 2, name: 'PHONE_CNTRY_CD'
               ph[:phoneType]   = phone_typ_cd unless phone_typ_cd.empty?
               ph[:phoneNumber] = phone_nbr unless phone_nbr.empty?
               ph[:extension]   = phone_extn_nbr unless phone_extn_nbr.empty?
-              ph[:country]     = postal_cntry_cd unless postal_cntry_cd.empty?
+              ph[:country]     = phone_cntry_cd unless phone_cntry_cd.empty?
               ph[:default]     = true
               ph[:active]      = true
 
