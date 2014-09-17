@@ -14,6 +14,9 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+require 'net/http'
+require 'nokogiri'
+require 'tempfile'
 require "rsmart_toolbox/etl"
 
 # rSmart Grant and Research Management methods.
@@ -352,6 +355,40 @@ module Rsmart::ETL::GRM
     opt[:name] = "ACTV_IND" if opt[:name].nil?
     actv_ind = parse_actv_ind row[ Rsmart::ETL::to_symbol( opt[:name] ) ]
     Rsmart::ETL::mutate_sql_stmt! insert_str, opt[:name], values_str, actv_ind
+  end
+
+  # Performs an XML XSD schema validation using the published schema.
+  # @note Any schema validation errors are output to STDOUT via puts.
+  # @param xml_filename [String] A path to the XML file to be validated.
+  # @return [Boolean] true if no validation errors are found; otherwise false.
+  def self.validate_hr_xml(xml_filename)
+    ret_val = false
+    # validate the resulting XML file against the official XSD schema
+    uri = URI 'https://raw.githubusercontent.com/rSmart/ce-tech-docs/master/hrmanifest.xsd'
+    Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
+      Tempfile.open "hrmanifest.xsd" do |schema|
+        request = Net::HTTP::Get.new uri
+        http.request request do |response|
+          response.read_body do |segment|
+            schema.write(segment)
+          end
+        end
+        schema.rewind
+        xsd = Nokogiri::XML::Schema schema
+        doc = Nokogiri::XML File.read xml_filename
+        xml_errors = xsd.validate doc
+        if xml_errors.empty?
+          puts "Congratulations! The XML file passes XSD schema validation! w00t!\n\n"
+          ret_val = true
+        else
+          puts "Sorry, the XML file does NOT pass XSD schema validation!:"
+          xml_errors.each do |error|
+            puts error.message
+          end
+        end
+      end # schema
+    end
+    return ret_val
   end
 
 end

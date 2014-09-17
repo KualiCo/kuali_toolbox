@@ -5,11 +5,8 @@ require 'bundler/setup'
 
 require 'builder'
 require 'csv'
-require 'net/http'
-require 'nokogiri'
 require 'optparse'
 require 'rest_client'
-require 'tempfile'
 require 'time'
 require 'rsmart_toolbox/etl/grm'
 
@@ -302,33 +299,10 @@ CSV.open(opt[:csv_filename], opt[:csv_options]) do |csv|
     end # hrmanifest
   end # xml_file
 end # csv
+
 puts "\nXML file written to #{opt[:xml_filename]}\n\n"
 
-# validate the resulting XML file against the official XSD schema
-uri = URI 'https://raw.githubusercontent.com/rSmart/ce-tech-docs/master/hrmanifest.xsd'
-Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
-  Tempfile.open "hrmanifest.xsd" do |file|
-    request = Net::HTTP::Get.new uri
-    http.request request do |response|
-      response.read_body do |segment|
-        file.write(segment)
-      end
-    end
-    file.rewind
-    xsd = Nokogiri::XML::Schema file
-    doc = Nokogiri::XML File.read opt[:xml_filename]
-    xml_errors = xsd.validate doc
-    if xml_errors.empty?
-      puts "Congratulations! The XML file passes XSD schema validation! w00t!\n\n"
-    else
-      puts "Sorry, the XML file does NOT pass XSD schema validation!:"
-      xml_errors.each do |error|
-        puts error.message
-      end
-      exit 1
-    end
-  end # file
-end
+exit 1 unless GRM.validate_hr_xml opt[:xml_filename]
 
 # POST the XML file to the server if opt[:url]
 if opt[:url]
