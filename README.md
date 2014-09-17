@@ -40,6 +40,13 @@ Usage: transform_CSV_to_HR_XML [options] csv_file
     -h, --help                       Display this screen
 ```
 
+### validate_HR_XML
+
+```
+Usage: validate_HR_XML xml_file
+    -h, --help                       Display this screen
+```
+
 ## Contributing
 
 1. Fork it: https://github.com/rSmart/rsmart_toolbox/fork

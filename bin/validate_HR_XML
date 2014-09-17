@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'bundler/setup'
+
+require 'optparse'
+require 'rsmart_toolbox/etl/grm'
+
+GRM = Rsmart::ETL::GRM
+
+def self.parse_command_line_options( executable, args, opt={} )
+  optparse = OptionParser.new do |opts|
+    opts.banner = "Usage: #{executable} xml_file"
+    opts.on( '-h', '--help', 'Display this screen' ) do
+      puts opts
+      exit 1
+    end
+
+    opt[:xml_filename] = args[0] unless opt[:xml_filename]
+    if opt[:xml_filename].nil? || opt[:xml_filename].empty?
+      puts opts
+      exit 1
+    end
+  end
+  optparse.parse!
+
+  return opt
+end
+
+opt = parse_command_line_options (File.basename $0), ARGF.argv
+
+exit 1 unless GRM.validate_hr_xml opt[:xml_filename]
