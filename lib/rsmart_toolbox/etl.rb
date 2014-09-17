@@ -297,13 +297,13 @@ module Rsmart::ETL
                               } )
     optparse = OptionParser.new do |opts|
       opts.banner = "Usage: #{executable} [options] csv_file"
-      opts.on( '-o [sql_file_output]' ,'--output [sql_file_output]', 'The file the SQL data will be writen to... (defaults to <csv_file>.sql)') do |f|
+      opts.on( '-o' ,'--output SQL_FILE_OUTPUT', 'The file the SQL data will be writen to... (defaults to <csv_file>.sql)') do |f|
         opt[:sql_filename] = f
       end
-      opts.on( '-s [separator_character]' ,'--separator [separator_character]', 'The character that separates each column of the CSV file.') do |s|
+      opts.on( '-s' ,'--separator SEPARATOR_CHARACTER', 'The character that separates each column of the CSV file.') do |s|
         opt[:csv_options][:col_sep] = s
       end
-      opts.on( '-q [quote_character]' ,'--quote [quote_character]', 'The character used to quote fields.') do |q|
+      opts.on( '-q' ,'--quote QUOTE_CHARACTER', 'The character used to quote fields.') do |q|
         opt[:csv_options][:quote_char] = q
       end
       opts.on( '-h', '--help', 'Display this screen' ) do
