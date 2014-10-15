@@ -81,6 +81,8 @@ end
 
 opt = parse_command_line_options (File.basename $0), ARGF.argv
 
+text_parse_errors = []
+
 CSV.open(opt[:csv_filename], opt[:csv_options]) do |csv|
   record_count = csv.readlines.count
   csv.rewind # go back to first row
@@ -293,12 +295,30 @@ CSV.open(opt[:csv_filename], opt[:csv_options]) do |csv|
 
           rescue TextParseError => e
             puts e.message
+            text_parse_errors.push e
           end
         end # row
       end # record
     end # hrmanifest
   end # xml_file
 end # csv
+
+def number_of_errors(parse_errors_array)
+  num_errors = 0
+  unless parse_errors_array.empty?
+    parse_errors_array.each do |err|
+      num_errors += 1 if err.message.start_with? "ERROR"
+    end
+  end
+  return num_errors
+end
+
+num_errors = number_of_errors text_parse_errors
+if num_errors > 0
+  puts "\n#{num_errors} errors found and must be corrected.\n\n"
+  File.unlink opt[:xml_filename]
+  exit 1
+end
 
 puts "\nXML file written to #{opt[:xml_filename]}\n\n"
 
