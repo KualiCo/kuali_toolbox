@@ -444,4 +444,78 @@ RSpec.describe "Rsmart::ETL" do
     end
   end
 
+  describe "#parse_date" do
+    it "parses valid date strings" do
+      expect(ETL.parse_date("2014-10-31")).to eq("2014-10-31")
+      expect(ETL.parse_date(nil)).to eq('')
+      expect(ETL.parse_date('')).to eq('')
+    end
+
+    it "raises a TextParseError if invalid dates are supplied" do
+      expect { ETL.parse_date("1-1-1") }.to raise_error(TextParseError)
+      expect { ETL.parse_date("123") }.to   raise_error(TextParseError)
+      expect { ETL.parse_date("Q") }.to     raise_error(TextParseError)
+    end
+  end
+
+  describe "#parse_date!" do
+    it "modifies the insert_str and values_str based on a CSV::Row match" do
+      insert_str = ""; values_str = ""; name = "INCORPORATED_DATE"
+      row = CSV::Row.new([name.downcase.to_sym], ['2014-10-31'], true)
+      ETL.parse_date!(row, insert_str, values_str, name: name)
+      expect(insert_str).to eq "#{name},"
+      expect(values_str).to eq "'2014-10-31',"
+    end
+  end
+
+  describe "#parse_datetime" do
+    it "parses valid datetime strings" do
+      expect(ETL.parse_datetime("2014-10-31 00:00:00")).to eq("2014-10-31 00:00:00")
+      expect(ETL.parse_datetime("1970-10-31 10:10:10")).to eq("1970-10-31 10:10:10")
+      expect(ETL.parse_datetime(nil)).to eq('')
+      expect(ETL.parse_datetime('')).to eq('')
+    end
+
+    it "raises a TextParseError if invalid dates are supplied" do
+      expect { ETL.parse_datetime("1970-10-31") }.to raise_error(TextParseError)
+      expect { ETL.parse_datetime("123") }.to        raise_error(TextParseError)
+      expect { ETL.parse_datetime("Q") }.to          raise_error(TextParseError)
+    end
+  end
+
+  describe "#parse_datetime!" do
+    it "modifies the insert_str and values_str based on a CSV::Row match" do
+      insert_str = ""; values_str = ""; name = "INCORPORATED_DATE"
+      row = CSV::Row.new([name.downcase.to_sym], ['1970-10-31 10:10:10'], true)
+      ETL.parse_datetime!(row, insert_str, values_str, name: name)
+      expect(insert_str).to eq "#{name},"
+      expect(values_str).to eq "'1970-10-31 10:10:10',"
+    end
+  end
+
+  describe "#parse_timestamp" do
+    it "parses valid datetime strings" do
+      expect(ETL.parse_timestamp("2014-10-31 00:00:00")).to eq("2014-10-31 00:00:00")
+      expect(ETL.parse_timestamp("1970-10-31 10:10:10")).to eq("1970-10-31 10:10:10")
+      expect(ETL.parse_timestamp(nil)).to eq('')
+      expect(ETL.parse_timestamp('')).to eq('')
+    end
+
+    it "raises a TextParseError if invalid dates are supplied" do
+      expect { ETL.parse_timestamp("1970-10-31") }.to raise_error(TextParseError)
+      expect { ETL.parse_timestamp("123") }.to        raise_error(TextParseError)
+      expect { ETL.parse_timestamp("Q") }.to          raise_error(TextParseError)
+    end
+  end
+
+  describe "#parse_timestamp!" do
+    it "modifies the insert_str and values_str based on a CSV::Row match" do
+      insert_str = ""; values_str = ""; name = "INCORPORATED_DATE"
+      row = CSV::Row.new([name.downcase.to_sym], ['1970-10-31 10:10:10'], true)
+      ETL.parse_timestamp!(row, insert_str, values_str, name: name)
+      expect(insert_str).to eq "#{name},"
+      expect(values_str).to eq "'1970-10-31 10:10:10',"
+    end
+  end
+
 end

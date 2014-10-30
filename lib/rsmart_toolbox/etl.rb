@@ -262,6 +262,83 @@ module Rsmart::ETL
     end
   end
 
+  # Parse a SQL date from a String.
+  # @param [String] str the String to be parsed.
+  # @param [Hash] opt options Hash will be passed through to #parse_string.
+  # @return [String] the parsed date. nil or empty inputs will return '' by default.
+  # @see parse_string
+  def self.parse_date(str, opt={ valid_values: /^$|(\d{4}\-\d{2}\-\d{2}){1}/ })
+    opt[:valid_values] = /^$|(\d{4}\-\d{2}\-\d{2}){1}/ if opt[:valid_values].nil?
+    return parse_string str, opt
+  end
+
+  # Helper method for #parse_date which finds the value by column :name and mutates the SQL statement accordingly.
+  # @param [CSV::Row] row the CSV Row being parsed
+  # @param [String] insert_str the left side of the insert statement (i.e. columns)
+  # @param [String] values_str the right side of the insert statement (i.e. values)
+  # @param [Hash] opt options Hash will be passed through to #parse_date.
+  # @option opt [String] :name the name of the field being parsed. Required.
+  # @return [void]
+  # @raise [ArgumentError] :name is required.
+  # @see parse_date
+  # @see mutate_sql_stmt!
+  def self.parse_date!(row, insert_str, values_str, opt={})
+    raise ArgumentError, "opt[:name] is required!" unless opt[:name]
+    date = parse_date( row[ to_symbol( opt[:name] ) ], opt )
+    mutate_sql_stmt! insert_str, opt[:name], values_str, date
+  end
+
+  # Parse a SQL datetime from a String.
+  # @param [String] str the String to be parsed.
+  # @param [Hash] opt options Hash will be passed through to #parse_string.
+  # @return [String] the parsed datetime. nil or empty inputs will return '' by default.
+  # @see parse_string
+  def self.parse_datetime(str, opt={ valid_values: /^$|(\d{4}\-\d{2}\-\d{2}){1}\s(\d{2}:\d{2}:\d{2})?/ })
+    opt[:valid_values] = /^$|(\d{4}\-\d{2}\-\d{2}){1}\s(\d{2}:\d{2}:\d{2})?/ if opt[:valid_values].nil?
+    return parse_string str, opt
+  end
+
+  # Helper method for #parse_datetime which finds the value by column :name and mutates the SQL statement accordingly.
+  # @param [CSV::Row] row the CSV Row being parsed
+  # @param [String] insert_str the left side of the insert statement (i.e. columns)
+  # @param [String] values_str the right side of the insert statement (i.e. values)
+  # @param [Hash] opt options Hash will be passed through to #parse_datetime.
+  # @option opt [String] :name the name of the field being parsed. Required.
+  # @return [void]
+  # @raise [ArgumentError] :name is required.
+  # @see parse_datetime
+  # @see mutate_sql_stmt!
+  def self.parse_datetime!(row, insert_str, values_str, opt={})
+    raise ArgumentError, "opt[:name] is required!" unless opt[:name]
+    datetime = parse_datetime( row[ to_symbol( opt[:name] ) ], opt )
+    mutate_sql_stmt! insert_str, opt[:name], values_str, datetime
+  end
+
+  # Parse a SQL timestamp from a String.
+  # @param [String] str the String to be parsed.
+  # @param [Hash] opt options Hash will be passed through to #parse_string.
+  # @return [String] the parsed timestamp. nil or empty inputs will return '' by default.
+  # @see parse_string
+  def self.parse_timestamp(str, opt={ valid_values: /^$|(\d{4}\-\d{2}\-\d{2}){1}\s(\d{2}:\d{2}:\d{2})?/ })
+    return parse_datetime str, opt
+  end
+
+  # Helper method for #parse_timestamp which finds the value by column :name and mutates the SQL statement accordingly.
+  # @param [CSV::Row] row the CSV Row being parsed
+  # @param [String] insert_str the left side of the insert statement (i.e. columns)
+  # @param [String] values_str the right side of the insert statement (i.e. values)
+  # @param [Hash] opt options Hash will be passed through to #parse_timestamp.
+  # @option opt [String] :name the name of the field being parsed. Required.
+  # @return [void]
+  # @raise [ArgumentError] :name is required.
+  # @see parse_timestamp
+  # @see mutate_sql_stmt!
+  def self.parse_timestamp!(row, insert_str, values_str, opt={})
+    raise ArgumentError, "opt[:name] is required!" unless opt[:name]
+    timestamp = parse_datetime( row[ to_symbol( opt[:name] ) ], opt )
+    mutate_sql_stmt! insert_str, opt[:name], values_str, timestamp
+  end
+
   # Useful for parsing "flag" like values; i.e. usually single characters.
   # @param [String] str the String to be parsed.
   # @param [Hash] opt options Hash will be passed through to #parse_string.
