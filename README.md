@@ -39,6 +39,7 @@ Usage: transform_CSV_to_HR_XML [options] csv_file
     -l, --url [url]                  The full URL of the HR REST API; e.g. https://localhost/kc-dev/hr-import/hrimport/import
     -h, --help                       Display this screen
 ```
+> Note: Please be sure to use the [Account_Provisioning_CSV_Template.xlsx](https://github.com/rSmart/rsmart_toolbox/raw/master/Account_Provisioning_CSV_Template.xlsx) template with this tool.
 
 ### validate_HR_XML
 
