@@ -364,7 +364,7 @@ module Rsmart::ETL::GRM
   def self.validate_hr_xml(xml_filename)
     ret_val = false
     # validate the resulting XML file against the official XSD schema
-    uri = URI 'https://raw.githubusercontent.com/rSmart/ce-tech-docs/master/hrmanifest.xsd'
+    uri = URI 'https://raw.githubusercontent.com/KualiCo/ce-tech-docs/master/hrmanifest.xsd'
     Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
       Tempfile.open "hrmanifest.xsd" do |schema|
         request = Net::HTTP::Get.new uri
