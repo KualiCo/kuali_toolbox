@@ -16,5 +16,5 @@
 
 module Rsmart
   # The gem version number.
-  VERSION = "0.15"
+  VERSION = "0.16"
 end
