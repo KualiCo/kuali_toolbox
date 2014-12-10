@@ -306,9 +306,9 @@ module Rsmart::ETL::GRM
   # @return [String] the parsed <tt>CITIZENSHIP_TYPE_CODE</tt>.
   # @raise [TextParseError] if the <tt>CITIZENSHIP_TYPE_CODE</tt> is not valid.
   # @see parse_string
-  def self.parse_citizenship_type(str, opt={ name: 'CITIZENSHIP_TYPE_CODE', valid_values: /^([1-4])$/ })
+  def self.parse_citizenship_type(str, opt={ name: 'CITIZENSHIP_TYPE_CODE', valid_values: /^([1-5])$/ })
     opt[:name]         = "CITIZENSHIP_TYPE_CODE" if opt[:name].nil?
-    opt[:valid_values] = /^([1-4])$/ if opt[:valid_values].nil?
+    opt[:valid_values] = /^([1-5])$/ if opt[:valid_values].nil?
     return Rsmart::ETL::parse_flag str, opt
   end
 
