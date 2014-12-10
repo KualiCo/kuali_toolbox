@@ -367,7 +367,7 @@ module Rsmart::ETL::GRM
     uri = URI 'https://raw.githubusercontent.com/KualiCo/ce-tech-docs/master/hrmanifest.xsd'
     Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
       Tempfile.open "hrmanifest.xsd" do |schema|
-        request = Net::HTTP::Get.new uri
+        request = Net::HTTP::Get.new uri.request_uri
         http.request request do |response|
           response.read_body do |segment|
             schema.write(segment)
