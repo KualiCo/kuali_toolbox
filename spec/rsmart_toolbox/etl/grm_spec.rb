@@ -582,7 +582,7 @@ RSpec.describe "Rsmart::ETL::GRM" do
 
     it "raises an TextParseError if the citizenship_type is not a valid value" do
       expect { GRM.parse_citizenship_type("0") }.to raise_error(TextParseError)
-      expect { GRM.parse_citizenship_type("5") }.to raise_error(TextParseError)
+      expect { GRM.parse_citizenship_type("6") }.to raise_error(TextParseError)
       expect { GRM.parse_citizenship_type("Z") }.to raise_error(TextParseError)
     end
 
