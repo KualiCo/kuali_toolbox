@@ -8,6 +8,8 @@ Client library and command-line tools to help interact with rSmart's cloud APIs.
 
 ## Installation
 
+Ruby 2.0 or higher is required
+
 To simply install the gem and provide access to the command line tools:
 
     $ gem install rsmart_toolbox
@@ -50,7 +52,7 @@ Usage: validate_HR_XML xml_file
 
 ## Contributing
 
-1. Fork it: https://github.com/rSmart/rsmart_toolbox/fork
+1. Fork it: https://github.com/KualiCo/rsmart_toolbox/fork
 2. Create your feature branch: `git checkout -b my-new-feature`
 3. Commit your changes: `git commit -am 'Add some feature'`
 4. Push to the branch: `git push origin my-new-feature`
