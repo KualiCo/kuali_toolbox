@@ -17,11 +17,11 @@
 require 'spec_helper'
 require 'kuali_toolbox'
 
-RSpec.describe "Rsmart" do
+RSpec.describe "KualiCo" do
 
   it "has a VERSION number" do
-    expect( Rsmart::VERSION ).not_to be_nil
-    expect( Rsmart::VERSION ).to match /^(\d+)\.*(\d+)\.*(\d+)*\.*(\d+)*$/
+    expect( KualiCo::VERSION ).not_to be_nil
+    expect( KualiCo::VERSION ).to match /^(\d+)\.*(\d+)\.*(\d+)*\.*(\d+)*$/
   end
 
 end

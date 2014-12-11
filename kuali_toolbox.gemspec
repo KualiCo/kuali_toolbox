@@ -21,7 +21,7 @@ require 'kuali_toolbox/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "kuali_toolbox"
-  spec.version       = Rsmart::VERSION
+  spec.version       = KualiCo::VERSION
   spec.authors       = ["Lance Speelmon"]
   spec.email         = ["lspeelmon@rsmart.com"]
   spec.summary       = %q{Client library and command-line tools to help interact with rSmart's cloud APIs.}

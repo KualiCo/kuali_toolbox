@@ -19,5 +19,5 @@ require 'optparse'
 require 'pp'
 require "kuali_toolbox/version"
 
-module Rsmart
+module KualiCo
 end

@@ -17,10 +17,10 @@
 require 'spec_helper'
 require 'kuali_toolbox/etl/grm'
 
-GRM  = Rsmart::ETL::GRM
-TextParseError = Rsmart::ETL::TextParseError
+GRM  = KualiCo::ETL::GRM
+TextParseError = KualiCo::ETL::TextParseError
 
-RSpec.describe "Rsmart::ETL::GRM" do
+RSpec.describe "KualiCo::ETL::GRM" do
 
   describe "#parse_rolodex_id!" do
     #   `ROLODEX_ID` decimal(6,0) NOT NULL DEFAULT '0',

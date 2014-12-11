@@ -6,7 +6,7 @@ require 'bundler/setup'
 require 'optparse'
 require 'kuali_toolbox/etl/grm'
 
-GRM = Rsmart::ETL::GRM
+GRM = KualiCo::ETL::GRM
 
 def self.parse_command_line_options( executable, args, opt={} )
   optparse = OptionParser.new do |opts|

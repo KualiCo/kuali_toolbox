@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-module Rsmart
+module KualiCo
   # The gem version number.
   VERSION = "0.18"
 end

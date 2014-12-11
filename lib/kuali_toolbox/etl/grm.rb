@@ -20,13 +20,13 @@ require 'tempfile'
 require "kuali_toolbox/etl"
 
 # rSmart Grant and Research Management methods.
-module Rsmart::ETL::GRM
+module KualiCo::ETL::GRM
 
   # Parses the <tt>ROLODEX_ID</tt> by column :name and mutates the SQL statement accordingly.
   # @param row [CSV::Row] the CSV Row being parsed
   # @param insert_str [String] the left side of the insert statement (i.e. columns)
   # @param values_str [String] the right side of the insert statement (i.e. values)
-  # @param opt [Hash] options Hash will be passed through to {Rsmart::ETL.parse_integer!}.
+  # @param opt [Hash] options Hash will be passed through to {KualiCo::ETL.parse_integer!}.
   # @return [void]
   # @see parse_integer!
   def self.parse_rolodex_id!(row, insert_str, values_str, opt={ name: 'ROLODEX_ID', required: true, length: 6 })
@@ -34,42 +34,42 @@ module Rsmart::ETL::GRM
     opt[:name]     = "ROLODEX_ID" if opt[:name].nil?
     opt[:required] = true if opt[:required].nil?
     opt[:length]   = 6 if opt[:length].nil?
-    Rsmart::ETL::parse_integer! row, insert_str, values_str, opt
+    KualiCo::ETL::parse_integer! row, insert_str, values_str, opt
   end
 
   # Parses the <tt>COUNTRY_CODE</tt> by column :name and mutates the SQL statement accordingly.
   # @param row [CSV::Row] the CSV Row being parsed
   # @param insert_str [String] the left side of the insert statement (i.e. columns)
   # @param values_str [String] the right side of the insert statement (i.e. values)
-  # @param opt [Hash] options Hash will be passed through to {Rsmart::ETL.parse_string!}.
+  # @param opt [Hash] options Hash will be passed through to {KualiCo::ETL.parse_string!}.
   # @return [void]
   # @see parse_string!
   def self.parse_country_code!(row, insert_str, values_str, opt={ name: 'COUNTRY_CODE', length: 3 })
     #   `COUNTRY_CODE` char(3) COLLATE utf8_bin DEFAULT NULL,
     opt[:name]   = "COUNTRY_CODE" if opt[:name].nil?
     opt[:length] = 3 if opt[:length].nil?
-    Rsmart::ETL::parse_string! row, insert_str, values_str, opt
+    KualiCo::ETL::parse_string! row, insert_str, values_str, opt
   end
 
   # Parses the <tt>STATE</tt> by column :name and mutates the SQL statement accordingly.
   # @param row [CSV::Row] the CSV Row being parsed
   # @param insert_str [String] the left side of the insert statement (i.e. columns)
   # @param values_str [String] the right side of the insert statement (i.e. values)
-  # @param opt [Hash] options Hash will be passed through to {Rsmart::ETL.parse_string!}.
+  # @param opt [Hash] options Hash will be passed through to {KualiCo::ETL.parse_string!}.
   # @return [void]
   # @see parse_string!
   def self.parse_state!(row, insert_str, values_str, opt={ name: 'STATE', length: 30 })
     #   `STATE` varchar(30) COLLATE utf8_bin DEFAULT NULL,
     opt[:name]   = "STATE" if opt[:name].nil?
     opt[:length] = 30 if opt[:length].nil?
-    Rsmart::ETL::parse_string! row, insert_str, values_str, opt
+    KualiCo::ETL::parse_string! row, insert_str, values_str, opt
   end
 
   # Parses the <tt>SPONSOR_CODE</tt> by column :name and mutates the SQL statement accordingly.
   # @param row [CSV::Row] the CSV Row being parsed
   # @param insert_str [String] the left side of the insert statement (i.e. columns)
   # @param values_str [String] the right side of the insert statement (i.e. values)
-  # @param opt [Hash] options Hash will be passed through to {Rsmart::ETL.parse_string!}.
+  # @param opt [Hash] options Hash will be passed through to {KualiCo::ETL.parse_string!}.
   # @return [void]
   # @see parse_string!
   def self.parse_sponsor_code!(row, insert_str, values_str, opt={ name: 'SPONSOR_CODE', required: false, length: 6 })
@@ -77,28 +77,28 @@ module Rsmart::ETL::GRM
     opt[:name]     = "SPONSOR_CODE" if opt[:name].nil?
     opt[:required] = false if opt[:required].nil?
     opt[:length]   = 6 if opt[:length].nil?
-    Rsmart::ETL::parse_string! row, insert_str, values_str, opt
+    KualiCo::ETL::parse_string! row, insert_str, values_str, opt
   end
 
   # Parses the <tt>POSTAL_CODE</tt> by column :name and mutates the SQL statement accordingly.
   # @param row [CSV::Row] the CSV Row being parsed
   # @param insert_str [String] the left side of the insert statement (i.e. columns)
   # @param values_str [String] the right side of the insert statement (i.e. values)
-  # @param opt [Hash] options Hash will be passed through to {Rsmart::ETL.parse_string!}.
+  # @param opt [Hash] options Hash will be passed through to {KualiCo::ETL.parse_string!}.
   # @return [void]
   # @see parse_string!
   def self.parse_postal_code!(row, insert_str, values_str, opt={ name: 'POSTAL_CODE', length: 15 })
     #   `POSTAL_CODE` varchar(15) COLLATE utf8_bin DEFAULT NULL,
     opt[:name]   = "POSTAL_CODE" if opt[:name].nil?
     opt[:length] = 15 if opt[:length].nil?
-    Rsmart::ETL::parse_string! row, insert_str, values_str, opt
+    KualiCo::ETL::parse_string! row, insert_str, values_str, opt
   end
 
   # Parses the <tt>OWNED_BY_UNIT</tt> by column :name and mutates the SQL statement accordingly.
   # @param row [CSV::Row] the CSV Row being parsed
   # @param insert_str [String] the left side of the insert statement (i.e. columns)
   # @param values_str [String] the right side of the insert statement (i.e. values)
-  # @param opt [Hash] options Hash will be passed through to {Rsmart::ETL.parse_string!}.
+  # @param opt [Hash] options Hash will be passed through to {KualiCo::ETL.parse_string!}.
   # @return [void]
   # @see parse_string!
   def self.parse_owned_by_unit!(row, insert_str, values_str, opt={ name: 'OWNED_BY_UNIT', required: true, length: 8 })
@@ -106,13 +106,13 @@ module Rsmart::ETL::GRM
     opt[:name]     = "OWNED_BY_UNIT" if opt[:name].nil?
     opt[:required] = true if opt[:required].nil?
     opt[:length]   = 8 if opt[:length].nil?
-    Rsmart::ETL::parse_string! row, insert_str, values_str, opt
+    KualiCo::ETL::parse_string! row, insert_str, values_str, opt
   end
 
   # Parse an <tt>EMAIL_ADDRESS</tt> from a String.
   # @note The result is validated against a email address RegExp.
   # @param [String] str the String to be parsed.
-  # @param [Hash] opt options Hash will be passed through to {Rsmart::ETL.parse_string}.
+  # @param [Hash] opt options Hash will be passed through to {KualiCo::ETL.parse_string}.
   # @return [String] the parsed <tt>EMAIL_ADDRESS</tt>.
   # @raise [TextParseError] if the email address is not valid.
   # @see parse_string
@@ -121,7 +121,7 @@ module Rsmart::ETL::GRM
     opt[:name]         = "EMAIL_ADDRESS" if opt[:name].nil?
     opt[:length]       = 60 if opt[:length].nil?
     opt[:valid_values] = /^(([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?))?$/ if opt[:valid_values].nil?
-    return Rsmart::ETL::parse_string str, opt
+    return KualiCo::ETL::parse_string str, opt
   end
 
   # Parses the <tt>EMAIL_ADDRESS</tt> by column :name and mutates the SQL statement accordingly.
@@ -135,13 +135,13 @@ module Rsmart::ETL::GRM
   def self.parse_email_address!(row, insert_str, values_str, opt={ name: 'EMAIL_ADDRESS' })
     #   `EMAIL_ADDRESS` varchar(60) COLLATE utf8_bin DEFAULT NULL,
     opt[:name] = "EMAIL_ADDRESS" if opt[:name].nil?
-    email_address = parse_email_address row[ Rsmart::ETL::to_symbol( opt[:name] ) ]
-    Rsmart::ETL::mutate_sql_stmt! insert_str, opt[:name], values_str, email_address
+    email_address = parse_email_address row[ KualiCo::ETL::to_symbol( opt[:name] ) ]
+    KualiCo::ETL::mutate_sql_stmt! insert_str, opt[:name], values_str, email_address
   end
 
   # Parse a <tt>PRNCPL_ID</tt> from a String.
   # @param [String] str the String to be parsed.
-  # @param [Hash] opt options Hash will be passed through to {Rsmart::ETL.parse_string}.
+  # @param [Hash] opt options Hash will be passed through to {KualiCo::ETL.parse_string}.
   # @return [String] the parsed <tt>PRNCPL_ID</tt>.
   # @see parse_string
   def self.parse_principal_id(str, opt={ name: 'PRNCPL_ID', required: true, length: 40 })
@@ -149,12 +149,12 @@ module Rsmart::ETL::GRM
     opt[:name]     = "PRNCPL_ID" if opt[:name].nil?
     opt[:required] = true if opt[:required].nil?
     opt[:length]   = 40   if opt[:length].nil?
-    Rsmart::ETL::parse_string str, opt
+    KualiCo::ETL::parse_string str, opt
   end
 
   # Parse a <tt>PRNCPL_NM</tt> from a String.
   # @param [String] str the String to be parsed.
-  # @param [Hash] opt options Hash will be passed through to {Rsmart::ETL.parse_string}.
+  # @param [Hash] opt options Hash will be passed through to {KualiCo::ETL.parse_string}.
   # @return [String] the parsed <tt>PRNCPL_NM</tt>.
   # @see parse_string
   def self.parse_principal_name(str, opt={ name: 'PRNCPL_NM', required: true, length: 100 })
@@ -162,16 +162,16 @@ module Rsmart::ETL::GRM
     opt[:name]     = "PRNCPL_NM" if opt[:name].nil?
     opt[:length]   = 100  if opt[:length].nil?
     opt[:required] = true if opt[:required].nil?
-    prncpl_nm = Rsmart::ETL::parse_string str, opt
+    prncpl_nm = KualiCo::ETL::parse_string str, opt
     unless prncpl_nm =~ /^([a-z0-9\@\.\_\-]+)$/
-      raise Rsmart::ETL::error TextParseError.new "Illegal prncpl_nm found: '#{prncpl_nm}'"
+      raise KualiCo::ETL::error TextParseError.new "Illegal prncpl_nm found: '#{prncpl_nm}'"
     end
     return prncpl_nm
   end
 
   # Parse an <tt>EMP_STAT_CD</tt> from a String.
   # @param [String] str the String to be parsed.
-  # @param [Hash] opt options Hash will be passed through to {Rsmart::ETL.parse_string}.
+  # @param [Hash] opt options Hash will be passed through to {KualiCo::ETL.parse_string}.
   # @return [String] the parsed <tt>EMP_STAT_CD</tt>.
   # @raise [TextParseError] if the <tt>EMP_STAT_CD</tt> is not valid.
   # @see parse_string
@@ -179,12 +179,12 @@ module Rsmart::ETL::GRM
     #   `EMP_STAT_CD` varchar(40) COLLATE utf8_bin DEFAULT NULL,
     opt[:name]         = "EMP_STAT_CD" if opt[:name].nil?
     opt[:valid_values] = /^(A|D|L|N|P|R|S|T)$/i if opt[:valid_values].nil?
-    return Rsmart::ETL::parse_flag str, opt
+    return KualiCo::ETL::parse_flag str, opt
   end
 
   # Parse an <tt>EMP_TYP_CD</tt> from a String.
   # @param [String] str the String to be parsed.
-  # @param [Hash] opt options Hash will be passed through to {Rsmart::ETL.parse_string}.
+  # @param [Hash] opt options Hash will be passed through to {KualiCo::ETL.parse_string}.
   # @return [String] the parsed <tt>EMP_TYP_CD</tt>.
   # @raise [TextParseError] if the <tt>EMP_TYP_CD</tt> is not valid.
   # @see parse_string
@@ -192,12 +192,12 @@ module Rsmart::ETL::GRM
     #   `EMP_TYP_CD` varchar(40) COLLATE utf8_bin DEFAULT NULL,
     opt[:name]         = "EMP_TYP_CD" if opt[:name].nil?
     opt[:valid_values] = /^(N|O|P)$/i if opt[:valid_values].nil?
-    return Rsmart::ETL::parse_flag str, opt
+    return KualiCo::ETL::parse_flag str, opt
   end
 
   # Parse an <tt>ADDR_TYP_CD</tt> from a String.
   # @param [String] str the String to be parsed.
-  # @param [Hash] opt options Hash will be passed through to {Rsmart::ETL.parse_string}.
+  # @param [Hash] opt options Hash will be passed through to {KualiCo::ETL.parse_string}.
   # @return [String] the parsed <tt>ADDR_TYP_CD</tt>.
   # @raise [TextParseError] if the <tt>ADDR_TYP_CD</tt> is not valid.
   # @see parse_string
@@ -205,12 +205,12 @@ module Rsmart::ETL::GRM
     opt[:name]         = "ADDR_TYP_CD" if opt[:name].nil?
     opt[:length]       = 3 if opt[:length].nil?
     opt[:valid_values] = /^(HM|OTH|WRK)$/i if opt[:valid_values].nil?
-    return Rsmart::ETL::parse_flag str, opt
+    return KualiCo::ETL::parse_flag str, opt
   end
 
   # Parse a <tt>NM_TYP_CD</tt> from a String.
   # @param [String] str the String to be parsed.
-  # @param [Hash] opt options Hash will be passed through to {Rsmart::ETL.parse_string}.
+  # @param [Hash] opt options Hash will be passed through to {KualiCo::ETL.parse_string}.
   # @return [String] the parsed <tt>NM_TYP_CD</tt>.
   # @raise [TextParseError] if the <tt>NM_TYP_CD</tt> is not valid.
   # @see parse_string
@@ -218,12 +218,12 @@ module Rsmart::ETL::GRM
     opt[:name]         = "NM_TYP_CD" if opt[:name].nil?
     opt[:length]       = 4 if opt[:length].nil?
     opt[:valid_values] = /^(OTH|PRFR|PRM)$/i if opt[:valid_values].nil?
-    return Rsmart::ETL::parse_flag str, opt
+    return KualiCo::ETL::parse_flag str, opt
   end
 
   # Parse a <tt>PREFIX_NM</tt> from a String.
   # @param [String] str the String to be parsed.
-  # @param [Hash] opt options Hash will be passed through to {Rsmart::ETL.parse_string}.
+  # @param [Hash] opt options Hash will be passed through to {KualiCo::ETL.parse_string}.
   # @return [String] the parsed <tt>PREFIX_NM</tt>.
   # @raise [TextParseError] if the <tt>PREFIX_NM</tt> is not valid.
   # @see parse_string
@@ -232,12 +232,12 @@ module Rsmart::ETL::GRM
     opt[:length]       = 3 if opt[:length].nil?
     opt[:valid_values] = /^(Ms|Mrs|Mr|Dr)?$/ if opt[:valid_values].nil?
     opt[:upcase]       = false if opt[:upcase].nil?
-    return Rsmart::ETL::parse_flag str, opt
+    return KualiCo::ETL::parse_flag str, opt
   end
 
   # Parse a <tt>SUFFIX_NM</tt> from a String.
   # @param [String] str the String to be parsed.
-  # @param [Hash] opt options Hash will be passed through to {Rsmart::ETL.parse_string}.
+  # @param [Hash] opt options Hash will be passed through to {KualiCo::ETL.parse_string}.
   # @return [String] the parsed <tt>SUFFIX_NM</tt>.
   # @raise [TextParseError] if the <tt>SUFFIX_NM</tt> is not valid.
   # @see parse_string
@@ -246,12 +246,12 @@ module Rsmart::ETL::GRM
     opt[:length]       = 3 if opt[:length].nil?
     opt[:valid_values] = /^(Jr|Sr|Mr|Md)?$/ if opt[:valid_values].nil?
     opt[:upcase]       = false if opt[:upcase].nil?
-    return Rsmart::ETL::parse_flag str, opt
+    return KualiCo::ETL::parse_flag str, opt
   end
 
   # Parse a <tt>PHONE_TYP_CD</tt> from a String.
   # @param [String] str the String to be parsed.
-  # @param [Hash] opt options Hash will be passed through to {Rsmart::ETL.parse_string}.
+  # @param [Hash] opt options Hash will be passed through to {KualiCo::ETL.parse_string}.
   # @return [String] the parsed <tt>PHONE_TYP_CD</tt>.
   # @raise [TextParseError] if the <tt>PHONE_TYP_CD</tt> is not valid.
   # @see parse_string
@@ -259,12 +259,12 @@ module Rsmart::ETL::GRM
     opt[:name]         = "PHONE_TYP_CD" if opt[:name].nil?
     opt[:length]       = 3 if opt[:length].nil?
     opt[:valid_values] = /^(FAX|HM|MBL|OTH|WRK)$/i if opt[:valid_values].nil?
-    return Rsmart::ETL::parse_flag str, opt
+    return KualiCo::ETL::parse_flag str, opt
   end
 
   # Parse a <tt>PHONE_NBR</tt> from a String.
   # @param [String] str the String to be parsed.
-  # @param [Hash] opt options Hash will be passed through to {Rsmart::ETL.parse_string}.
+  # @param [Hash] opt options Hash will be passed through to {KualiCo::ETL.parse_string}.
   # @return [String] the parsed <tt>PHONE_NBR</tt>.
   # @raise [TextParseError] if the <tt>PHONE_NBR</tt> is not valid.
   # @see parse_string
@@ -272,12 +272,12 @@ module Rsmart::ETL::GRM
     opt[:name]         = "PHONE_NBR" if opt[:name].nil?
     opt[:length]       = 12 if opt[:length].nil?
     opt[:valid_values] = /^(\d{3}-\d{3}-\d{4})?$/ if opt[:valid_values].nil?
-    return Rsmart::ETL::parse_string str, opt
+    return KualiCo::ETL::parse_string str, opt
   end
 
   # Parse an <tt>EMAIL_TYP_CD</tt> from a String.
   # @param [String] str the String to be parsed.
-  # @param [Hash] opt options Hash will be passed through to {Rsmart::ETL.parse_string}.
+  # @param [Hash] opt options Hash will be passed through to {KualiCo::ETL.parse_string}.
   # @return [String] the parsed <tt>EMAIL_TYP_CD</tt>.
   # @raise [TextParseError] if the <tt>EMAIL_TYP_CD</tt> is not valid.
   # @see parse_string
@@ -285,36 +285,36 @@ module Rsmart::ETL::GRM
     opt[:name]         = "EMAIL_TYP_CD" if opt[:name].nil?
     opt[:length]       = 3 if opt[:length].nil?
     opt[:valid_values] = /^(HM|OTH|WRK)$/i if opt[:valid_values].nil?
-    return Rsmart::ETL::parse_flag str, opt
+    return KualiCo::ETL::parse_flag str, opt
   end
 
   # Parse a <tt>YEAR</tt> from a String.
   # @param [String] str the String to be parsed.
-  # @param [Hash] opt options Hash will be passed through to {Rsmart::ETL.parse_string}.
+  # @param [Hash] opt options Hash will be passed through to {KualiCo::ETL.parse_string}.
   # @return [String] the parsed <tt>YEAR</tt>.
   # @raise [TextParseError] if the <tt>YEAR</tt> is not valid.
   # @see parse_string
   def self.parse_year(str, opt={ name: 'YEAR', length: 4, valid_values: /^(\d{4})?$/ })
     opt[:length]       = 4 if opt[:length].nil?
     opt[:valid_values] = /^(\d{4})?$/ if opt[:valid_values].nil?
-    return Rsmart::ETL::parse_string str, opt
+    return KualiCo::ETL::parse_string str, opt
   end
 
   # Parse a <tt>CITIZENSHIP_TYPE_CODE</tt> from a String.
   # @param [String] str the String to be parsed.
-  # @param [Hash] opt options Hash will be passed through to {Rsmart::ETL.parse_string}.
+  # @param [Hash] opt options Hash will be passed through to {KualiCo::ETL.parse_string}.
   # @return [String] the parsed <tt>CITIZENSHIP_TYPE_CODE</tt>.
   # @raise [TextParseError] if the <tt>CITIZENSHIP_TYPE_CODE</tt> is not valid.
   # @see parse_string
   def self.parse_citizenship_type(str, opt={ name: 'CITIZENSHIP_TYPE_CODE', valid_values: /^([1-5])$/ })
     opt[:name]         = "CITIZENSHIP_TYPE_CODE" if opt[:name].nil?
     opt[:valid_values] = /^([1-5])$/ if opt[:valid_values].nil?
-    return Rsmart::ETL::parse_flag str, opt
+    return KualiCo::ETL::parse_flag str, opt
   end
 
   # Parse a <tt>DEGREE</tt> from a String.
   # @param [String] str the String to be parsed.
-  # @param [Hash] opt options Hash will be passed through to {Rsmart::ETL.parse_string}.
+  # @param [Hash] opt options Hash will be passed through to {KualiCo::ETL.parse_string}.
   # @return [String] the parsed <tt>DEGREE</tt>.
   # @raise [TextParseError] if the <tt>DEGREE</tt> is not valid.
   # @see parse_string
@@ -323,13 +323,13 @@ module Rsmart::ETL::GRM
     opt[:length]       = 5 if opt[:length].nil?
     opt[:valid_values] = /^(AS|BA|BComm|BEd|BS|DA|DC|DD|DDS|DEng|DFA|DH|DHA|DMin|DPA|DSN|DVM|DVS|HS|JD|LLD|LLM|MA|MAEd|MArch|MBA|MD|MDS|MDiv|MEE|MEd|MEng|MFA|MIS|MLS|MPA|MPE|MPH|MPd|MPhil|MS|MSEd|MST|MSW|MTh|PhD|PharD|ScD|ThD|UKNW)?$/ if opt[:valid_values].nil?
     opt[:upcase]       = false if opt[:upcase].nil?
-    return Rsmart::ETL::parse_flag str, opt
+    return KualiCo::ETL::parse_flag str, opt
   end
 
   # Parse an <tt>ACTV_IND</tt> from a String.
   # @note Designed specifically for <tt>ACTV_IND</tt>, but could be used on *any* fields that matches <tt>(Y|N)</tt>.
   # @param [String] str the String to be parsed.
-  # @param [Hash] opt options Hash will be passed through to {Rsmart::ETL.parse_string}.
+  # @param [Hash] opt options Hash will be passed through to {KualiCo::ETL.parse_string}.
   # @return [String] the parsed <tt>ACTV_IND</tt>.
   # @raise [TextParseError] if the <tt>ACTV_IND</tt> is not valid.
   # @see parse_string
@@ -338,7 +338,7 @@ module Rsmart::ETL::GRM
     opt[:name]         = "ACTV_IND" if opt[:name].nil?
     opt[:default]      = "Y" if opt[:default].nil?
     opt[:valid_values] = /^(Y|N)$/i if opt[:valid_values].nil?
-    return Rsmart::ETL::parse_flag str, opt
+    return KualiCo::ETL::parse_flag str, opt
   end
 
   # Parses the <tt>ACTV_IND</tt> by column :name and mutates the SQL statement accordingly.
@@ -353,8 +353,8 @@ module Rsmart::ETL::GRM
   def self.parse_actv_ind!(row, insert_str, values_str, opt={ name: 'ACTV_IND' })
     #   `ACTV_IND` varchar(1) COLLATE utf8_bin DEFAULT 'Y',
     opt[:name] = "ACTV_IND" if opt[:name].nil?
-    actv_ind = parse_actv_ind row[ Rsmart::ETL::to_symbol( opt[:name] ) ]
-    Rsmart::ETL::mutate_sql_stmt! insert_str, opt[:name], values_str, actv_ind
+    actv_ind = parse_actv_ind row[ KualiCo::ETL::to_symbol( opt[:name] ) ]
+    KualiCo::ETL::mutate_sql_stmt! insert_str, opt[:name], values_str, actv_ind
   end
 
   # Performs an XML XSD schema validation using the published schema.

@@ -17,9 +17,9 @@
 require 'spec_helper'
 require 'kuali_toolbox/etl'
 
-ETL = Rsmart::ETL
+ETL = KualiCo::ETL
 
-RSpec.describe "Rsmart::ETL" do
+RSpec.describe "KualiCo::ETL" do
 
   describe "#error" do
     it "it returns a TextParseError when passed a String" do

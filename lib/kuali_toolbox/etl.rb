@@ -17,7 +17,7 @@
 require "kuali_toolbox"
 
 # rSmart extract, transform and load methods.
-module Rsmart::ETL
+module KualiCo::ETL
 
   # Any text parsing related errors will use this Exception.
   class TextParseError < StandardError
@@ -97,7 +97,7 @@ module Rsmart::ETL
     if b.empty?
       return nil
     end
-    raise Rsmart::ETL::error TextParseError.new "invalid value for Boolean: '#{str}'"
+    raise KualiCo::ETL::error TextParseError.new "invalid value for Boolean: '#{str}'"
   end
 
   # Encodes the input String and replaces invalid or undefined characters.
@@ -175,7 +175,7 @@ module Rsmart::ETL
     opt[:escape_single_quotes] = true if opt[:escape_single_quotes].nil?
     retval = encode str.to_s.strip
     if opt[:required] && retval.empty?
-      raise Rsmart::ETL::error TextParseError.new "Required data element '#{opt[:name]}' not found: '#{str}'"
+      raise KualiCo::ETL::error TextParseError.new "Required data element '#{opt[:name]}' not found: '#{str}'"
     end
     if opt[:default] && retval.empty?
       retval = opt[:default].to_s
@@ -183,12 +183,12 @@ module Rsmart::ETL
     if opt[:length] && retval.length > opt[:length].to_i
       detail = "#{opt[:name]}.length > #{opt[:length]}: '#{str}'-->'#{str[0..(opt[:length] - 1)]}'"
       if opt[:strict]
-        raise Rsmart::ETL::error TextParseError.new "Data exceeds maximum field length: #{detail}"
+        raise KualiCo::ETL::error TextParseError.new "Data exceeds maximum field length: #{detail}"
       end
-      Rsmart::ETL::warning "Data will be truncated: #{detail}"
+      KualiCo::ETL::warning "Data will be truncated: #{detail}"
     end
     if opt[:valid_values] && ! valid_value(retval, opt[:valid_values], opt)
-      raise Rsmart::ETL::error TextParseError.new "Illegal #{opt[:name]}: value '#{str}' not found in: #{opt[:valid_values]}"
+      raise KualiCo::ETL::error TextParseError.new "Illegal #{opt[:name]}: value '#{str}' not found in: #{opt[:valid_values]}"
     end
     if opt[:escape_single_quotes]
       retval = escape_single_quotes retval
@@ -363,7 +363,7 @@ module Rsmart::ETL
   # @option opt [Hash] :csv_options the options that will be used by the CSV parser.
   # @return [Hash] a Hash containing the parsed command line results.
   # @example The most common usage:
-  #   opt = Rsmart::ETL.parse_csv_command_line_options (File.basename $0), ARGF.argv
+  #   opt = KualiCo::ETL.parse_csv_command_line_options (File.basename $0), ARGF.argv
   def self.parse_csv_command_line_options(
       executable, args, opt={ csv_options: { headers: :first_row,
                                              header_converters: :symbol,
