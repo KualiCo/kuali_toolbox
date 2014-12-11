@@ -17,17 +17,17 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'rsmart_toolbox/version'
+require 'kuali_toolbox/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "rsmart_toolbox"
+  spec.name          = "kuali_toolbox"
   spec.version       = Rsmart::VERSION
   spec.authors       = ["Lance Speelmon"]
   spec.email         = ["lspeelmon@rsmart.com"]
   spec.summary       = %q{Client library and command-line tools to help interact with rSmart's cloud APIs.}
   # spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = "http://rsmart.github.io/rsmart_toolbox/"
-  spec.metadata      = { "issue_tracker" => "https://github.com/rSmart/rsmart_toolbox/issues" }
+  spec.homepage      = "http://rsmart.github.io/kuali_toolbox/"
+  spec.metadata      = { "issue_tracker" => "https://github.com/rSmart/kuali_toolbox/issues" }
   spec.license       = "AGPL-3.0"
 
   spec.files         = `git ls-files -z`.split("\x0")

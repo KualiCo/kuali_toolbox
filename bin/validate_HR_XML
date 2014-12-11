@@ -4,7 +4,7 @@ require 'rubygems'
 require 'bundler/setup'
 
 require 'optparse'
-require 'rsmart_toolbox/etl/grm'
+require 'kuali_toolbox/etl/grm'
 
 GRM = Rsmart::ETL::GRM
 

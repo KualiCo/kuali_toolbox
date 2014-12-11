@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'spec_helper'
-require 'rsmart_toolbox/etl'
+require 'kuali_toolbox/etl'
 
 ETL = Rsmart::ETL
 

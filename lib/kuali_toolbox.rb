@@ -14,14 +14,10 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'spec_helper'
-require 'rsmart_toolbox'
+require 'csv'
+require 'optparse'
+require 'pp'
+require "kuali_toolbox/version"
 
-RSpec.describe "Rsmart" do
-
-  it "has a VERSION number" do
-    expect( Rsmart::VERSION ).not_to be_nil
-    expect( Rsmart::VERSION ).to match /^(\d+)\.*(\d+)\.*(\d+)*\.*(\d+)*$/
-  end
-
+module Rsmart
 end

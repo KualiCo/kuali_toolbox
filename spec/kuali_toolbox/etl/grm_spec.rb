@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'spec_helper'
-require 'rsmart_toolbox/etl/grm'
+require 'kuali_toolbox/etl/grm'
 
 GRM  = Rsmart::ETL::GRM
 TextParseError = Rsmart::ETL::TextParseError

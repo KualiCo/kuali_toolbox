@@ -17,7 +17,7 @@
 require 'net/http'
 require 'nokogiri'
 require 'tempfile'
-require "rsmart_toolbox/etl"
+require "kuali_toolbox/etl"
 
 # rSmart Grant and Research Management methods.
 module Rsmart::ETL::GRM

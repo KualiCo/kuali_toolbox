@@ -16,5 +16,5 @@
 
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in rsmart_toolbox.gemspec
+# Specify your gem's dependencies in kuali_toolbox.gemspec
 gemspec

@@ -8,7 +8,7 @@ require 'csv'
 require 'optparse'
 require 'rest_client'
 require 'time'
-require 'rsmart_toolbox/etl/grm'
+require 'kuali_toolbox/etl/grm'
 
 ETL = Rsmart::ETL
 GRM = Rsmart::ETL::GRM
