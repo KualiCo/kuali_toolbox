@@ -4,7 +4,7 @@
 [![Test Coverage](https://codeclimate.com/github/KualiCo/kuali_toolbox/badges/coverage.svg)](https://codeclimate.com/github/KualiCo/kuali_toolbox)
 [![Gem Version](https://badge.fury.io/rb/kuali_toolbox.svg)](http://badge.fury.io/rb/kuali_toolbox)
 
-Client library and command-line tools to help interact with rSmart's cloud APIs.
+Client library and command-line tools to help interact with KualiCo's cloud APIs.
 
 ## Installation
 
@@ -39,7 +39,7 @@ Usage: transform_CSV_to_HR_XML [options] csv_file
     -l, --url [url]                  The full URL of the HR REST API; e.g. https://localhost/kc-dev/hr-import/hrimport/import
     -h, --help                       Display this screen
 ```
-> Note: Please be sure to use the [Account_Provisioning_CSV_Template.xlsx](https://github.com/rSmart/kuali_toolbox/raw/master/Account_Provisioning_CSV_Template.xlsx) template with this tool.
+> Note: Please be sure to use the [Account_Provisioning_CSV_Template.xlsx](https://github.com/KualiCo/kuali_toolbox/raw/master/Account_Provisioning_CSV_Template.xlsx) template with this tool.
 
 ### validate_HR_XML
 

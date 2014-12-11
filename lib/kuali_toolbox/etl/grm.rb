@@ -19,7 +19,7 @@ require 'nokogiri'
 require 'tempfile'
 require "kuali_toolbox/etl"
 
-# rSmart Grant and Research Management methods.
+# KualiCo Grant and Research Management methods.
 module KualiCo::ETL::GRM
 
   # Parses the <tt>ROLODEX_ID</tt> by column :name and mutates the SQL statement accordingly.

@@ -16,7 +16,7 @@
 
 require "kuali_toolbox"
 
-# rSmart extract, transform and load methods.
+# KualiCo extract, transform and load methods.
 module KualiCo::ETL
 
   # Any text parsing related errors will use this Exception.

@@ -24,10 +24,10 @@ Gem::Specification.new do |spec|
   spec.version       = KualiCo::VERSION
   spec.authors       = ["Lance Speelmon"]
   spec.email         = ["lspeelmon@rsmart.com"]
-  spec.summary       = %q{Client library and command-line tools to help interact with rSmart's cloud APIs.}
+  spec.summary       = %q{Client library and command-line tools to help interact with KualiCo's cloud APIs.}
   # spec.description   = %q{TODO: Write a longer description. Optional.}
   spec.homepage      = "http://rsmart.github.io/kuali_toolbox/"
-  spec.metadata      = { "issue_tracker" => "https://github.com/rSmart/kuali_toolbox/issues" }
+  spec.metadata      = { "issue_tracker" => "https://github.com/KualiCo/kuali_toolbox/issues" }
   spec.license       = "AGPL-3.0"
 
   spec.files         = `git ls-files -z`.split("\x0")
