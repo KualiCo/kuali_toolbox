@@ -1,5 +1,5 @@
-# rSmart client library and command-line tool to help interact with rSmart's cloud APIs.
-# Copyright (C) 2014 The rSmart Group, Inc.
+# KualiCo's client library and command-line tool to help interact with KualiCo's cloud APIs.
+# Copyright (C) 2014-2015 KualiCo, Inc.
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
