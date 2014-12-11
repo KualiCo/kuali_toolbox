@@ -8,6 +8,8 @@ Client library and command-line tools to help interact with rSmart's cloud APIs.
 
 ## Installation
 
+Ruby 2.0 or higher is required
+
 To simply install the gem and provide access to the command line tools:
 
     $ gem install rsmart_toolbox
