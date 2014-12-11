@@ -23,10 +23,10 @@ Gem::Specification.new do |spec|
   spec.name          = "kuali_toolbox"
   spec.version       = KualiCo::VERSION
   spec.authors       = ["Lance Speelmon"]
-  spec.email         = ["lspeelmon@rsmart.com"]
+  spec.email         = ["lspeelmon@kuali.co"]
   spec.summary       = %q{Client library and command-line tools to help interact with KualiCo's cloud APIs.}
   # spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = "http://rsmart.github.io/kuali_toolbox/"
+  spec.homepage      = "http://kualico.github.io/kuali_toolbox/"
   spec.metadata      = { "issue_tracker" => "https://github.com/KualiCo/kuali_toolbox/issues" }
   spec.license       = "AGPL-3.0"
 

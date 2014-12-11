@@ -67,7 +67,7 @@ def self.parse_command_line_options(
   end
 
   unless opt[:email_recipients]
-    opt[:email_recipients] = "no-reply@rsmart.com"
+    opt[:email_recipients] = "no-reply@kuali.co"
   end
 
   if opt[:url]

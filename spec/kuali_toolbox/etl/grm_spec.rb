@@ -177,10 +177,10 @@ RSpec.describe "KualiCo::ETL::GRM" do
   describe "#parse_email_address!" do
     it "Modifies the insert_str and values_str based on a CSV::Row match" do
       insert_str = ""; values_str = "";
-      row = CSV::Row.new(['email_address'.to_sym], ['lance@rsmart.com'], true)
+      row = CSV::Row.new(['email_address'.to_sym], ['lance@kuali.co'], true)
       GRM.parse_email_address!(row, insert_str, values_str)
       expect(insert_str).to eq("EMAIL_ADDRESS,")
-      expect(values_str).to eq("'lance@rsmart.com',")
+      expect(values_str).to eq("'lance@kuali.co',")
     end
 
     it "Does not raise an TextParseError if nil or empty" do
