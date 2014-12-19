@@ -91,8 +91,8 @@ CSV.open(opt[:csv_filename], opt[:csv_options]) do |csv|
     xml = Builder::XmlMarkup.new target: xml_file, indent: 2
     xml.instruct! :xml, encoding: "UTF-8"
     xml.hrmanifest "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance",
-      "xsi:schemaLocation" => "https://github.com/KualiCo/ce-tech-docs/tree/master/v1_0 https://raw.github.com/KualiCo/ce-tech-docs/master/v1_0/hrmanifest.xsd",
-      xmlns: "https://github.com/KualiCo/ce-tech-docs/tree/master/v1_0",
+      "xsi:schemaLocation" => "https://github.com/KualiCo/ce-tech-docs/tree/master/v1_0 https://raw.github.com/rSmart/ce-tech-docs/master/v1_0/hrmanifest.xsd",
+      xmlns: "https://github.com/rSmart/ce-tech-docs/tree/master/v1_0",
       schemaVersion: "1.0",
       statusEmailRecipient: opt[:email_recipients],
       reportDate: Time.now.iso8601,
