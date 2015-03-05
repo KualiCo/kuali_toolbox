@@ -345,8 +345,8 @@ RSpec.describe "KualiCo::ETL::GRM" do
     end
 
     it "raises an TextParseError if the address_type_code is nil or empty" do
-      expect { GRM.parse_address_type_code(nil) }.to raise_error(TextParseError)
-      expect { GRM.parse_address_type_code("") }.to  raise_error(TextParseError)
+      expect(GRM.parse_address_type_code(nil)).to eq("")
+      expect(GRM.parse_address_type_code("")).to  eq("")
     end
 
     # <xs:maxLength value="3"/>
@@ -471,8 +471,8 @@ RSpec.describe "KualiCo::ETL::GRM" do
     end
 
     it "raises an TextParseError if the phone_type is nil or empty" do
-      expect { GRM.parse_phone_type(nil) }.to raise_error(TextParseError)
-      expect { GRM.parse_phone_type("") }.to  raise_error(TextParseError)
+      expect(GRM.parse_phone_type(nil)).to eq("")
+      expect(GRM.parse_phone_type("")).to  eq("")
     end
 
     # <xs:maxLength value="3"/>
@@ -536,8 +536,8 @@ RSpec.describe "KualiCo::ETL::GRM" do
     end
 
     it "raises an TextParseError if the email_type is nil or empty" do
-      expect { GRM.parse_email_type(nil) }.to raise_error(TextParseError)
-      expect { GRM.parse_email_type("") }.to  raise_error(TextParseError)
+      expect(GRM.parse_email_type(nil)).to eq("")
+      expect(GRM.parse_email_type("")).to  eq("")
     end
 
     # <xs:maxLength value="3"/>
@@ -587,8 +587,8 @@ RSpec.describe "KualiCo::ETL::GRM" do
     end
 
     it "raises an TextParseError if the citizenship_type is nil or empty" do
-      expect { GRM.parse_citizenship_type(nil) }.to raise_error(TextParseError)
-      expect { GRM.parse_citizenship_type("") }.to  raise_error(TextParseError)
+      expect(GRM.parse_citizenship_type(nil)).to eq("")
+      expect(GRM.parse_citizenship_type("")).to  eq("")
     end
 
     it "raises an TextParseError if length exceeds 1 character" do

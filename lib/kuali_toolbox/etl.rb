@@ -179,6 +179,8 @@ module KualiCo::ETL
     end
     if opt[:default] && retval.empty?
       retval = opt[:default].to_s
+    elsif retval.empty?
+      return retval
     end
     if opt[:length] && retval.length > opt[:length].to_i
       detail = "#{opt[:name]}.length > #{opt[:length]}: '#{str}'-->'#{str[0..(opt[:length] - 1)]}'"
