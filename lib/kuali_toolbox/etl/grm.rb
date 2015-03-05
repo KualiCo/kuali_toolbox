@@ -179,6 +179,7 @@ module KualiCo::ETL::GRM
     #   `EMP_STAT_CD` varchar(40) COLLATE utf8_bin DEFAULT NULL,
     opt[:name]         = "EMP_STAT_CD" if opt[:name].nil?
     opt[:valid_values] = /^(A|D|L|N|P|R|S|T)$/i if opt[:valid_values].nil?
+    opt[:required]     = true
     return KualiCo::ETL::parse_flag str, opt
   end
 
@@ -192,6 +193,7 @@ module KualiCo::ETL::GRM
     #   `EMP_TYP_CD` varchar(40) COLLATE utf8_bin DEFAULT NULL,
     opt[:name]         = "EMP_TYP_CD" if opt[:name].nil?
     opt[:valid_values] = /^(N|O|P)$/i if opt[:valid_values].nil?
+    opt[:required]     = true
     return KualiCo::ETL::parse_flag str, opt
   end
 
@@ -218,6 +220,7 @@ module KualiCo::ETL::GRM
     opt[:name]         = "NM_TYP_CD" if opt[:name].nil?
     opt[:length]       = 4 if opt[:length].nil?
     opt[:valid_values] = /^(OTH|PRFR|PRM)$/i if opt[:valid_values].nil?
+    opt[:required]     = true
     return KualiCo::ETL::parse_flag str, opt
   end
 
