@@ -158,6 +158,7 @@ module KualiCo::ETL
   # @option opt [String, #to_s] :default the default return value if str is empty. Must respond to #to_s
   # @option opt [Boolean] :escape_single_quotes escape single quote characters.
   # @option opt [Integer] :length raise a TextParseError if str.length > :length.
+  # @option opt [Boolean] :truncate string if longer than length.
   # @option opt [String] :name the name of the field being parsed. Used only for error handling.
   # @option opt [Boolean] :required raise a TextParseError if str is empty.
   # @option opt [Boolean] :strict strict length checking will produce errors instead of warnings.
@@ -187,7 +188,8 @@ module KualiCo::ETL
       if opt[:strict]
         raise KualiCo::ETL::error TextParseError.new "Data exceeds maximum field length: #{detail}"
       end
-      KualiCo::ETL::warning "Data will be truncated: #{detail}"
+      puts KualiCo::ETL::warning "Data will be truncated: #{detail}"
+      retval = retval[0..(opt[:length]-1)];
     end
     if opt[:valid_values] && ! valid_value(retval, opt[:valid_values], opt)
       raise KualiCo::ETL::error TextParseError.new "Illegal #{opt[:name]}: value '#{str}' not found in: #{opt[:valid_values]}"

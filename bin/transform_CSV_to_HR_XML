@@ -91,9 +91,9 @@ CSV.open(opt[:csv_filename], opt[:csv_options]) do |csv|
     xml = Builder::XmlMarkup.new target: xml_file, indent: 2
     xml.instruct! :xml, encoding: "UTF-8"
     xml.hrmanifest "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance",
-      "xsi:schemaLocation" => "https://github.com/KualiCo/ce-tech-docs/tree/master/v1_0 https://raw.github.com/rSmart/ce-tech-docs/master/v1_0/hrmanifest.xsd",
-      xmlns: "https://github.com/rSmart/ce-tech-docs/tree/master/v1_0",
-      schemaVersion: "1.0",
+      "xsi:schemaLocation" => "https://github.com/KualiCo/ce-tech-docs/tree/master/v2_0 https://raw.github.com/rSmart/ce-tech-docs/master/v2_0/hrmanifest.xsd",
+      xmlns: "https://github.com/rSmart/ce-tech-docs/tree/master/v2_0",
+      schemaVersion: "2.0",
       statusEmailRecipient: opt[:email_recipients],
       reportDate: Time.now.iso8601,
     recordCount: record_count do |hrmanifest|
@@ -226,8 +226,8 @@ CSV.open(opt[:csv_filename], opt[:csv_options]) do |csv|
               school = ETL.parse_string(  row[:school], length: 50, name: 'SCHOOL' )
               year_graduated = GRM.parse_year( row[:year_graduated], name: 'YEAR_GRADUATED' )
               directory_department = ETL.parse_string( row[:directory_department], length: 30, name: 'DIRECTORY_DEPARTMENT' )
-              directory_title = ETL.parse_string(  row[:directory_title], length: 50, name: 'DIRECTORY_TITLE' )
-              primary_title = ETL.parse_string(  row[:primary_title], length: 51, name: 'PRIMARY_TITLE' )
+              directory_title = ETL.parse_string(  row[:directory_title], length: 50, name: 'DIRECTORY_TITLE', strict: false )
+              primary_title = ETL.parse_string(  row[:primary_title], length: 51, name: 'PRIMARY_TITLE', strict: false )
               vacation_accural = ETL.parse_boolean( row[:vacation_accural], name: 'VACATION_ACCURAL' )
               is_on_sabbatical = ETL.parse_boolean( row[:is_on_sabbatical], name: 'IS_ON_SABBATICAL' )
               id_provided = ETL.parse_string(  row[:id_provided], length: 30, name: 'ID_PROVIDED' )
@@ -275,8 +275,8 @@ CSV.open(opt[:csv_filename], opt[:csv_options]) do |csv|
               salary = ETL.parse_float(  row[:salary], length: 15, name: 'SALARY' )
               appointment_start_date = ETL.parse_string( row[:appointment_start_date], name: 'APPOINTMENT_START_DATE' )
               appointment_end_date = ETL.parse_string( row[:appointment_end_date], name: 'APPOINTMENT_END_DATE' )
-              job_title = ETL.parse_string( row[:job_title], length: 50, name: 'JOB_TITLE' )
-              prefered_job_title = ETL.parse_string( row[:prefered_job_title], length: 51, name: 'PREFERED_JOB_TITLE' )
+              job_title = ETL.parse_string( row[:job_title], length: 50, name: 'JOB_TITLE', strict: false )
+              prefered_job_title = ETL.parse_string( row[:prefered_job_title], length: 51, name: 'PREFERED_JOB_TITLE', strict: false )
               ap[:unitNumber] = unit_number unless unit_number.empty?
               ap[:appointmentType] = appointment_type_code unless appointment_type_code.empty?
               ap[:jobCode] = job_code unless job_code.empty?
