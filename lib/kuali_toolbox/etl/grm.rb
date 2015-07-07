@@ -312,6 +312,7 @@ module KualiCo::ETL::GRM
   def self.parse_citizenship_type(str, opt={ name: 'CITIZENSHIP_TYPE_CODE', valid_values: /^([1-5])$/ })
     opt[:name]         = "CITIZENSHIP_TYPE_CODE" if opt[:name].nil?
     opt[:valid_values] = /^([1-5])$/ if opt[:valid_values].nil?
+    opt[:default] = 1
     return KualiCo::ETL::parse_flag str, opt
   end
 

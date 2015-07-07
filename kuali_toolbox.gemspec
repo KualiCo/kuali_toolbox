@@ -22,8 +22,8 @@ require 'kuali_toolbox/version'
 Gem::Specification.new do |spec|
   spec.name          = "kuali_toolbox"
   spec.version       = KualiCo::VERSION
-  spec.authors       = ["Lance Speelmon"]
-  spec.email         = ["lspeelmon@kuali.co"]
+  spec.authors       = ["KualiCo"]
+  spec.email         = ["dpace@kuali.co"]
   spec.summary       = %q{Client library and command-line tools to help interact with KualiCo's cloud APIs.}
   # spec.description   = %q{TODO: Write a longer description. Optional.}
   spec.homepage      = "http://kualico.github.io/kuali_toolbox/"
