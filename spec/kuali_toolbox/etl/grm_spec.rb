@@ -586,9 +586,9 @@ RSpec.describe "KualiCo::ETL::GRM" do
       expect { GRM.parse_citizenship_type("Z") }.to raise_error(TextParseError)
     end
 
-    it "raises an TextParseError if the citizenship_type is nil or empty" do
-      expect(GRM.parse_citizenship_type(nil)).to eq("")
-      expect(GRM.parse_citizenship_type("")).to  eq("")
+    it "defaults to citizenship_type 1" do
+      expect(GRM.parse_citizenship_type(nil)).to eq("1")
+      expect(GRM.parse_citizenship_type("")).to  eq("1")
     end
 
     it "raises an TextParseError if length exceeds 1 character" do

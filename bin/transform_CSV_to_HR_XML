@@ -79,13 +79,243 @@ def self.parse_command_line_options(
   return opt
 end
 
+
+def buildName(row)
+  nm = {}
+  nm_typ_cd = GRM.parse_name_code row[:nm_typ_cd]
+  prefix_nm = GRM.parse_prefix    row[:prefix_nm]
+  first_nm  = ETL.parse_string    row[:first_nm],  length: 40, name: 'FIRST_NM'
+  middle_nm = ETL.parse_string    row[:middle_nm], length: 40, name: 'MIDDLE_NM'
+  last_nm   = ETL.parse_string    row[:last_nm],   length: 80, name: 'LAST_NM'
+  suffix_nm = GRM.parse_suffix    row[:suffix_nm]
+  title_nm  = ETL.parse_string    row[:title_nm],  length: 20, name: 'TITLE_NM'
+  nm[:nameCode]   = nm_typ_cd unless nm_typ_cd.empty?
+  nm[:prefix]     = prefix_nm unless prefix_nm.empty?
+  nm[:firstName]  = first_nm unless first_nm.empty?
+  nm[:middleName] = middle_nm unless middle_nm.empty?
+  nm[:lastName]   = last_nm unless last_nm.empty?
+  nm[:suffix]     = suffix_nm unless suffix_nm.empty?
+  nm[:title]      = title_nm unless title_nm.empty?
+  nm[:default]    = true
+  nm[:active]     = true
+  return nm.empty? ? nil : nm 
+end
+
+def buildExtendedAttributes(row) 
+  ea = {}
+  visa_type = ETL.parse_string( row[:visa_type], length: 30, name: 'VISA_TYPE' )
+  county = ETL.parse_string(  row[:county], length: 30, name: 'COUNTY' )
+  age_by_fiscal_year = ETL.parse_integer( row[:age_by_fiscal_year], length: 3, name: 'AGE_BY_FISCAL_YEAR' )
+  race = ETL.parse_string(  row[:race], length: 30, name: 'RACE' )
+  education_level = ETL.parse_string(  row[:education_level], length: 30, name: 'EDUCATION_LEVEL' )
+  degree = GRM.parse_degree(  row[:degree], name: 'DEGREE' )
+  major = ETL.parse_string(  row[:major], length: 30, name: 'MAJOR' )
+  is_handicapped = ETL.parse_boolean( row[:is_handicapped], name: 'IS_HANDICAPPED' )
+  handicap_type = ETL.parse_string( row[:handicap_type], length: 30, name: 'HANDICAP_TYPE' )
+  is_veteran = ETL.parse_boolean( row[:is_veteran], name: 'IS_VETERAN' )
+  veteran_type = ETL.parse_string( row[:veteran_type], length: 30, name: 'VETERAN_TYPE' )
+  has_visa = ETL.parse_boolean( row[:has_visa], name: 'HAS_VISA' )
+  visa_code = ETL.parse_string( row[:visa_code], length: 20, name: 'VISA_CODE' )
+  visa_renewal_date = ETL.parse_string(  row[:visa_renewal_date], length: 19, name: 'VISA_RENEWAL_DATE' )
+  office_location = ETL.parse_string(  row[:office_location], length: 30, name: 'OFFICE_LOCATION' )
+  secondry_office_location = ETL.parse_string(  row[:secondry_office_location], length: 30, name: 'SECONDRY_OFFICE_LOCATION' )
+  school = ETL.parse_string(  row[:school], length: 50, name: 'SCHOOL' )
+  year_graduated = GRM.parse_year( row[:year_graduated], name: 'YEAR_GRADUATED' )
+  directory_department = ETL.parse_string( row[:directory_department], length: 30, name: 'DIRECTORY_DEPARTMENT' )
+  directory_title = ETL.parse_string(  row[:directory_title], length: 50, name: 'DIRECTORY_TITLE', strict: false )
+  primary_title = ETL.parse_string(  row[:primary_title], length: 51, name: 'PRIMARY_TITLE', strict: false )
+  vacation_accural = ETL.parse_boolean( row[:vacation_accural], name: 'VACATION_ACCURAL' )
+  is_on_sabbatical = ETL.parse_boolean( row[:is_on_sabbatical], name: 'IS_ON_SABBATICAL' )
+  id_provided = ETL.parse_string(  row[:id_provided], length: 30, name: 'ID_PROVIDED' )
+  id_verified = ETL.parse_string(  row[:id_verified], length: 30, name: 'ID_VERIFIED' )
+  citizenship_type_code = GRM.parse_citizenship_type( row[:citizenship_type_code] )
+  multi_campus_principal_id = ETL.parse_string(  row[:multi_campus_principal_id], length: 40, name: 'MULTI_CAMPUS_PRINCIPAL_ID' )
+  multi_campus_principal_name = ETL.parse_string(  row[:multi_campus_principal_name], length: 100, name: 'MULTI_CAMPUS_PRINCIPAL_NAME' )
+  salary_anniversary_date = ETL.parse_string(  row[:salary_anniversary_date], length: 10, name: 'SALARY_ANNIVERSARY_DATE' )
+  ea[:visaType] = visa_type unless visa_type.empty?
+  ea[:county] = county unless county.empty?
+  ea[:ageByFiscalYear] = age_by_fiscal_year unless age_by_fiscal_year.nil?
+  ea[:race] = race unless race.empty?
+  ea[:educationLevel] = education_level unless education_level.empty?
+  ea[:degree] = degree unless degree.empty?
+  ea[:major] = major unless major.empty?
+  ea[:handicapped] = is_handicapped unless is_handicapped.nil?
+  ea[:handicapType] = handicap_type unless handicap_type.empty?
+  ea[:veteran] = is_veteran unless is_veteran.nil?
+  ea[:veteranType] = veteran_type unless veteran_type.empty?
+  ea[:visa] = has_visa unless has_visa.nil?
+  ea[:visaCode] = visa_code unless visa_code.empty?
+  ea[:visaRenewalDate] = visa_renewal_date unless visa_renewal_date.empty?
+  ea[:officeLocation] = office_location unless office_location.empty?
+  ea[:secondaryOfficeLocation] = secondry_office_location unless secondry_office_location.empty?
+  ea[:school] = school unless school.empty?
+  ea[:yearGraduated] = year_graduated unless year_graduated.empty?
+  ea[:directoryDepartment] = directory_department unless directory_department.empty?
+  ea[:directoryTitle] = directory_title unless directory_title.empty?
+  ea[:primaryTitle] = primary_title unless primary_title.empty?
+  ea[:vacationAccrual] = vacation_accural unless vacation_accural.nil?
+  ea[:onSabbatical] = is_on_sabbatical unless is_on_sabbatical.nil?
+  ea[:idProvided] = id_provided unless id_provided.empty?
+  ea[:idVerified] = id_verified unless id_verified.empty?
+  ea[:citizenshipType] = citizenship_type_code unless citizenship_type_code.empty?
+  ea[:multiCampusPrincipalId] = multi_campus_principal_id unless multi_campus_principal_id.empty?
+  ea[:multiCampusPrincipalName] = multi_campus_principal_name unless multi_campus_principal_name.empty?
+  ea[:salaryAnniversaryDate] = salary_anniversary_date unless salary_anniversary_date.empty?
+  return ea
+end
+
+def buildAffiliations(row)
+  aff = {}
+  afltn_typ_cd = ETL.parse_string row[:afltn_typ_cd], name: 'AFLTN_TYP_CD', length: 40, required: true
+  campus       = ETL.parse_string row[:campus_cd], name: 'CAMPUS_CD', length: 2
+  aff[:affiliationType] = afltn_typ_cd unless afltn_typ_cd.empty?
+  aff[:campus]          = campus unless campus.empty?
+  aff[:default]         = true
+  aff[:active]          = true
+  
+  emp = {}
+  emp_stat_cd   = GRM.parse_emp_stat_cd row[:emp_stat_cd]
+  emp_typ_cd    = GRM.parse_emp_typ_cd  row[:emp_typ_cd]
+  base_slry_amt = ETL.parse_float       row[:base_slry_amt], length: 15, name: 'BASE_SLRY_AMT'
+  prmry_dept_cd = ETL.parse_string      row[:prmry_dept_cd], length: 40, name: 'PRMRY_DEPT_CD'
+  emp_id        = ETL.parse_string      row[:emp_id],        length: 40, name: 'EMP_ID'
+  emp[:employeeStatus]    = emp_stat_cd unless emp_stat_cd.empty?
+  emp[:employeeType]      = emp_typ_cd unless emp_typ_cd.empty?
+  emp[:baseSalaryAmount]  = base_slry_amt unless base_slry_amt.nil?
+  emp[:primaryDepartment] = prmry_dept_cd unless prmry_dept_cd.empty?
+  emp[:employeeId]        = emp_id unless emp_id.empty?
+  emp[:primaryEmployment] = true
+
+  if (!emp.empty?)
+    aff[:employment] = []
+    aff[:employment].push(emp);
+  end
+  return aff.empty? ? nil : aff
+end
+
+def buildAddress(row)
+  address         = {}
+  addr_typ_cd     = GRM.parse_address_type_code( row[:addr_typ_cd] )
+  addr_line_1     = ETL.parse_string( row[:addr_line_1], name: 'ADDR_LINE_1', length: 45 )
+  addr_line_2     = ETL.parse_string( row[:addr_line_2], name: 'ADDR_LINE_2', length: 45 )
+  addr_line_3     = ETL.parse_string( row[:addr_line_3], name: 'ADDR_LINE_3', length: 45 )
+  city            = ETL.parse_string( row[:city], name: 'CITY', length: 30 )
+  state_pvc_cd    = ETL.parse_string( row[:state_pvc_cd], name: 'STATE_PVC_CD', length: 2 )
+  postal_cd       = ETL.parse_string( row[:postal_cd], name: 'POSTAL_CD', length: 20 )
+  postal_cntry_cd = ETL.parse_string( row[:postal_cntry_cd], name: 'POSTAL_CNTRY_CD', length: 2 )
+  address[:addressTypeCode] = addr_typ_cd unless addr_typ_cd.empty?
+  address[:addressLine1]    = addr_line_1 unless addr_line_1.empty?
+  address[:addressLine2]    = addr_line_2 unless addr_line_2.empty?
+  address[:addressLine3]    = addr_line_3 unless addr_line_3.empty?
+  address[:city]            = city unless city.empty?
+  address[:stateOrProvince] = state_pvc_cd unless state_pvc_cd.empty?
+  address[:postalCode]      = postal_cd unless postal_cd.empty?
+  address[:country]         = postal_cntry_cd unless postal_cntry_cd.empty?
+  address[:default]         = true
+  return address.empty? ? nil : address
+end
+
+def buildPhone(row)
+  ph = {}
+  phone_typ_cd    = GRM.parse_phone_type   row[:phone_typ_cd]
+  phone_nbr       = GRM.parse_phone_number row[:phone_nbr]
+  phone_extn_nbr  = ETL.parse_string       row[:phone_extn_nbr],  length: 8, name: 'PHONE_EXTN_NBR'
+  phone_cntry_cd  = ETL.parse_string       row[:phone_cntry_cd], length: 2, name: 'PHONE_CNTRY_CD'
+  ph[:phoneType]   = phone_typ_cd unless phone_typ_cd.empty?
+  ph[:phoneNumber] = phone_nbr unless phone_nbr.empty?
+  ph[:extension]   = phone_extn_nbr unless phone_extn_nbr.empty?
+  ph[:country]     = phone_cntry_cd unless phone_cntry_cd.empty?
+  ph[:default]     = true
+  ph[:active]      = true
+  return ph.empty? ? nil : ph
+end
+
+def buildAppointment(row)
+  ap = {}
+  unit_number = ETL.parse_string( row[:unit_number], length: 8, name: 'UNIT_NUMBER' )
+  appointment_type_code = ETL.parse_string( row[:appointment_type_code], length: 3, name: 'APPOINTMENT_TYPE_CODE' )
+  job_code = ETL.parse_string( row[:job_code], length: 6, name: 'JOB_CODE' )
+  salary = ETL.parse_float(  row[:salary], length: 15, name: 'SALARY' )
+  appointment_start_date = ETL.parse_string( row[:appointment_start_date], name: 'APPOINTMENT_START_DATE' )
+  appointment_end_date = ETL.parse_string( row[:appointment_end_date], name: 'APPOINTMENT_END_DATE' )
+  job_title = ETL.parse_string( row[:job_title], length: 50, name: 'JOB_TITLE', strict: false )
+  prefered_job_title = ETL.parse_string( row[:prefered_job_title], length: 51, name: 'PREFERED_JOB_TITLE', strict: false )
+  ap[:unitNumber] = unit_number unless unit_number.empty?
+  ap[:appointmentType] = appointment_type_code unless appointment_type_code.empty?
+  ap[:jobCode] = job_code unless job_code.empty?
+  ap[:salary] = salary unless salary.nil?
+  ap[:startDate] = appointment_start_date unless appointment_start_date.empty?
+  ap[:endDate] = appointment_end_date unless appointment_end_date.empty?
+  ap[:jobTitle] = job_title unless job_title.empty?
+  ap[:preferedJobTitle] = prefered_job_title unless prefered_job_title.empty?
+  return ap.empty? ? nil : ap
+end
+
+def buildEmail(row)
+  em = {}
+  email_typ_cd = GRM.parse_email_type( row[:email_typ_cd] )
+  email_addr = GRM.parse_email_address( row[:email_addr] )
+  em[:emailType] = email_typ_cd unless email_typ_cd.empty?
+  em[:emailAddress] = email_addr unless email_addr.empty?
+  em[:default] = true
+  em[:active]  = true
+  return em.empty? ? nil : em
+end
+
+def addToListIfNotIncluded(item, list)
+  if (!item.nil? && list.nil?)
+    return [item]
+  elsif (!item.nil? && !list.include?(item))
+    if (item[:default] && !list.find{ |x| x[:default] }.nil?)
+      item[:default] = false
+    end
+    return list.push(item)
+  else
+    return list
+  end
+end
+
 opt = parse_command_line_options (File.basename $0), ARGF.argv
 
 text_parse_errors = []
 
+recordsByPrincipalId = {}
 CSV.open(opt[:csv_filename], opt[:csv_options]) do |csv|
   record_count = csv.readlines.count
   csv.rewind # go back to first row
+  csv.find_all do |row|
+    begin
+      principalId = GRM.parse_principal_id( row[:prncpl_id] )
+      record = recordsByPrincipalId.has_key?(principalId) ? recordsByPrincipalId[principalId] : {}
+      record[:principalId] = principalId
+      record[:principalName] = GRM.parse_principal_name( row[:prncpl_nm] )
+      record[:kcExtendedAttributes] = buildExtendedAttributes(row)
+
+      newAffiliation = buildAffiliations(row)
+      if (!newAffiliation.nil? && record[:affiliations].nil?)
+        record[:affiliations] = []
+      end
+      if (!record[:affiliations].include? newAffiliation)
+        record[:affiliations].push(newAffiliation)
+      end
+
+      record[:names] = addToListIfNotIncluded(buildName(row), record[:names])
+      record[:addresses] = addToListIfNotIncluded(buildAddress(row), record[:addresses])
+      record[:phones] = addToListIfNotIncluded(buildPhone(row), record[:phones])
+      record[:appointments] = addToListIfNotIncluded(buildAppointment(row), record[:appointments])
+      record[:emails] = addToListIfNotIncluded(buildEmail(row), record[:emails])
+
+      recordsByPrincipalId[principalId] = record
+      
+    rescue TextParseError => e
+      puts e.message
+      text_parse_errors.push e
+    end
+  end # row
+
+  #puts "#{recordsByPrincipalId}\n";
+  csv.rewind # go back to first row
+
 
   File.open(opt[:xml_filename], 'w') do |xml_file|
     xml = Builder::XmlMarkup.new target: xml_file, indent: 2
@@ -96,208 +326,65 @@ CSV.open(opt[:csv_filename], opt[:csv_options]) do |csv|
       schemaVersion: "2.0",
       statusEmailRecipient: opt[:email_recipients],
       reportDate: Time.now.iso8601,
-    recordCount: record_count do |hrmanifest|
+    recordCount: recordsByPrincipalId.length do |hrmanifest|
       hrmanifest.records do |record|
-        csv.find_all do |row| # begin processing csv rows
-          begin
-            xml.record principalId: GRM.parse_principal_id( row[:prncpl_id] ),
-            principalName: GRM.parse_principal_name( row[:prncpl_nm] ) do |record|
-              record.affiliations do |affiliations|
-                aff = {}
-                afltn_typ_cd = ETL.parse_string row[:afltn_typ_cd], name: 'AFLTN_TYP_CD', length: 40, required: true
-                campus       = ETL.parse_string row[:campus_cd], name: 'CAMPUS_CD', length: 2
-                aff[:affiliationType] = afltn_typ_cd unless afltn_typ_cd.empty?
-                aff[:campus]          = campus unless campus.empty?
-                aff[:default]         = true
-                aff[:active]          = true
+        recordsByPrincipalId.each do |principalId, info|
+          xml.record principalId: principalId,
+          principalName: info[:principalName] do |record|
 
-                affiliations.affiliation aff do |affiliation|
-                  emp = {}
-                  emp_stat_cd   = GRM.parse_emp_stat_cd row[:emp_stat_cd]
-                  emp_typ_cd    = GRM.parse_emp_typ_cd  row[:emp_typ_cd]
-                  base_slry_amt = ETL.parse_float       row[:base_slry_amt], length: 15, name: 'BASE_SLRY_AMT'
-                  prmry_dept_cd = ETL.parse_string      row[:prmry_dept_cd], length: 40, name: 'PRMRY_DEPT_CD'
-                  emp_id        = ETL.parse_string      row[:emp_id],        length: 40, name: 'EMP_ID'
-                  emp[:employeeStatus]    = emp_stat_cd unless emp_stat_cd.empty?
-                  emp[:employeeType]      = emp_typ_cd unless emp_typ_cd.empty?
-                  emp[:baseSalaryAmount]  = base_slry_amt unless base_slry_amt.nil?
-                  emp[:primaryDepartment] = prmry_dept_cd unless prmry_dept_cd.empty?
-                  emp[:employeeId]        = emp_id unless emp_id.empty?
-                  emp[:primaryEmployment] = true
-
-                  affiliation.employment emp
+            record.affiliations do |affiliations|
+              info[:affiliations].each do |affilInfo|
+                affiliations.affiliation affilInfo.reject{ |k| k == :employment } do |affiliation|
+                  affilInfo[:employment].each do |employmentInfo|
+                    affiliation.employment employmentInfo
+                  end
                 end
-              end # affiliations
-
-              address         = {}
-              addr_typ_cd     = GRM.parse_address_type_code( row[:addr_typ_cd] )
-              addr_line_1     = ETL.parse_string( row[:addr_line_1], name: 'ADDR_LINE_1', length: 45 )
-              addr_line_2     = ETL.parse_string( row[:addr_line_2], name: 'ADDR_LINE_2', length: 45 )
-              addr_line_3     = ETL.parse_string( row[:addr_line_3], name: 'ADDR_LINE_3', length: 45 )
-              city            = ETL.parse_string( row[:city], name: 'CITY', length: 30 )
-              state_pvc_cd    = ETL.parse_string( row[:state_pvc_cd], name: 'STATE_PVC_CD', length: 2 )
-              postal_cd       = ETL.parse_string( row[:postal_cd], name: 'POSTAL_CD', length: 20 )
-              postal_cntry_cd = ETL.parse_string( row[:postal_cntry_cd], name: 'POSTAL_CNTRY_CD', length: 2 )
-              address[:addressTypeCode] = addr_typ_cd unless addr_typ_cd.empty?
-              address[:addressLine1]    = addr_line_1 unless addr_line_1.empty?
-              address[:addressLine2]    = addr_line_2 unless addr_line_2.empty?
-              address[:addressLine3]    = addr_line_3 unless addr_line_3.empty?
-              address[:city]            = city unless city.empty?
-              address[:stateOrProvince] = state_pvc_cd unless state_pvc_cd.empty?
-              address[:postalCode]      = postal_cd unless postal_cd.empty?
-              address[:country]         = postal_cntry_cd unless postal_cntry_cd.empty?
-              unless address.empty?
-                record.addresses do |addresses|
-                  addresses.address address
-                end # addresses
               end
+            end # affiliations
 
+            unless info[:addresses].nil? || info[:addresses].empty?
+              record.addresses do |addresses|
+                info[:addresses].each do |addrInfo|
+                  addresses.address addrInfo
+                end
+              end # addresses
+            end
+
+            unless info[:names].nil?
               record.names do |names|
-                nm = {}
-                nm_typ_cd = GRM.parse_name_code row[:nm_typ_cd]
-                prefix_nm = GRM.parse_prefix    row[:prefix_nm]
-                first_nm  = ETL.parse_string    row[:first_nm],  length: 40, name: 'FIRST_NM'
-                middle_nm = ETL.parse_string    row[:middle_nm], length: 40, name: 'MIDDLE_NM'
-                last_nm   = ETL.parse_string    row[:last_nm],   length: 80, name: 'LAST_NM'
-                suffix_nm = GRM.parse_suffix    row[:suffix_nm]
-                title_nm  = ETL.parse_string    row[:title_nm],  length: 20, name: 'TITLE_NM'
-                nm[:nameCode]   = nm_typ_cd unless nm_typ_cd.empty?
-                nm[:prefix]     = prefix_nm unless prefix_nm.empty?
-                nm[:firstName]  = first_nm unless first_nm.empty?
-                nm[:middleName] = middle_nm unless middle_nm.empty?
-                nm[:lastName]   = last_nm unless last_nm.empty?
-                nm[:suffix]     = suffix_nm unless suffix_nm.empty?
-                nm[:title]      = title_nm unless title_nm.empty?
-                nm[:default]    = true
-                nm[:active]     = true
-
-                names.name nm
+                info[:names].each do |nameInfo|
+                  names.name nameInfo
+                end
               end # names
+            end
 
-              ph = {}
-              phone_typ_cd    = GRM.parse_phone_type   row[:phone_typ_cd]
-              phone_nbr       = GRM.parse_phone_number row[:phone_nbr]
-              phone_extn_nbr  = ETL.parse_string       row[:phone_extn_nbr],  length: 8, name: 'PHONE_EXTN_NBR'
-              phone_cntry_cd  = ETL.parse_string       row[:phone_cntry_cd], length: 2, name: 'PHONE_CNTRY_CD'
-              ph[:phoneType]   = phone_typ_cd unless phone_typ_cd.empty?
-              ph[:phoneNumber] = phone_nbr unless phone_nbr.empty?
-              ph[:extension]   = phone_extn_nbr unless phone_extn_nbr.empty?
-              ph[:country]     = phone_cntry_cd unless phone_cntry_cd.empty?
-              ph[:default]     = true
-              ph[:active]      = true
-
-              unless phone_typ_cd.empty? || phone_nbr.empty?
-                record.phones do |phones|
-                  phones.phone ph
-                end # phones
+            unless info[:phones].nil? || info[:phones].empty?
+              record.phones do |phones|
+                info[:phones].each do |phoneInfo|
+                  phones.phone phoneInfo
+                end
               end
+            end
 
-              em = {}
-              email_typ_cd = GRM.parse_email_type( row[:email_typ_cd] )
-              email_addr = GRM.parse_email_address( row[:email_addr] )
-              em[:emailType] = email_typ_cd unless email_typ_cd.empty?
-              em[:emailAddress] = email_addr unless email_addr.empty?
-              em[:default] = true
-              em[:active]  = true
+            unless info[:emails].nil? || info[:emails].empty?
+              record.emails do |emails|
+                info[:emails].each do |emailInfo|
+                  emails.email emailInfo
+                end
+              end # emails
+            end
 
-              unless email_typ_cd.empty? || email_addr.empty?
-                record.emails do |emails|
-                  emails.email em unless email_addr.empty?
-                end # emails
-              end
+            record.kcExtendedAttributes info[:kcExtendedAttributes]
 
-              ea = {}
-              visa_type = ETL.parse_string( row[:visa_type], length: 30, name: 'VISA_TYPE' )
-              county = ETL.parse_string(  row[:county], length: 30, name: 'COUNTY' )
-              age_by_fiscal_year = ETL.parse_integer( row[:age_by_fiscal_year], length: 3, name: 'AGE_BY_FISCAL_YEAR' )
-              race = ETL.parse_string(  row[:race], length: 30, name: 'RACE' )
-              education_level = ETL.parse_string(  row[:education_level], length: 30, name: 'EDUCATION_LEVEL' )
-              degree = GRM.parse_degree(  row[:degree], name: 'DEGREE' )
-              major = ETL.parse_string(  row[:major], length: 30, name: 'MAJOR' )
-              is_handicapped = ETL.parse_boolean( row[:is_handicapped], name: 'IS_HANDICAPPED' )
-              handicap_type = ETL.parse_string( row[:handicap_type], length: 30, name: 'HANDICAP_TYPE' )
-              is_veteran = ETL.parse_boolean( row[:is_veteran], name: 'IS_VETERAN' )
-              veteran_type = ETL.parse_string( row[:veteran_type], length: 30, name: 'VETERAN_TYPE' )
-              has_visa = ETL.parse_boolean( row[:has_visa], name: 'HAS_VISA' )
-              visa_code = ETL.parse_string( row[:visa_code], length: 20, name: 'VISA_CODE' )
-              visa_renewal_date = ETL.parse_string(  row[:visa_renewal_date], length: 19, name: 'VISA_RENEWAL_DATE' )
-              office_location = ETL.parse_string(  row[:office_location], length: 30, name: 'OFFICE_LOCATION' )
-              secondry_office_location = ETL.parse_string(  row[:secondry_office_location], length: 30, name: 'SECONDRY_OFFICE_LOCATION' )
-              school = ETL.parse_string(  row[:school], length: 50, name: 'SCHOOL' )
-              year_graduated = GRM.parse_year( row[:year_graduated], name: 'YEAR_GRADUATED' )
-              directory_department = ETL.parse_string( row[:directory_department], length: 30, name: 'DIRECTORY_DEPARTMENT' )
-              directory_title = ETL.parse_string(  row[:directory_title], length: 50, name: 'DIRECTORY_TITLE', strict: false )
-              primary_title = ETL.parse_string(  row[:primary_title], length: 51, name: 'PRIMARY_TITLE', strict: false )
-              vacation_accural = ETL.parse_boolean( row[:vacation_accural], name: 'VACATION_ACCURAL' )
-              is_on_sabbatical = ETL.parse_boolean( row[:is_on_sabbatical], name: 'IS_ON_SABBATICAL' )
-              id_provided = ETL.parse_string(  row[:id_provided], length: 30, name: 'ID_PROVIDED' )
-              id_verified = ETL.parse_string(  row[:id_verified], length: 30, name: 'ID_VERIFIED' )
-              citizenship_type_code = GRM.parse_citizenship_type( row[:citizenship_type_code] )
-              multi_campus_principal_id = ETL.parse_string(  row[:multi_campus_principal_id], length: 40, name: 'MULTI_CAMPUS_PRINCIPAL_ID' )
-              multi_campus_principal_name = ETL.parse_string(  row[:multi_campus_principal_name], length: 100, name: 'MULTI_CAMPUS_PRINCIPAL_NAME' )
-              salary_anniversary_date = ETL.parse_string(  row[:salary_anniversary_date], length: 10, name: 'SALARY_ANNIVERSARY_DATE' )
-              ea[:visaType] = visa_type unless visa_type.empty?
-              ea[:county] = county unless county.empty?
-              ea[:ageByFiscalYear] = age_by_fiscal_year unless age_by_fiscal_year.nil?
-              ea[:race] = race unless race.empty?
-              ea[:educationLevel] = education_level unless education_level.empty?
-              ea[:degree] = degree unless degree.empty?
-              ea[:major] = major unless major.empty?
-              ea[:handicapped] = is_handicapped unless is_handicapped.nil?
-              ea[:handicapType] = handicap_type unless handicap_type.empty?
-              ea[:veteran] = is_veteran unless is_veteran.nil?
-              ea[:veteranType] = veteran_type unless veteran_type.empty?
-              ea[:visa] = has_visa unless has_visa.nil?
-              ea[:visaCode] = visa_code unless visa_code.empty?
-              ea[:visaRenewalDate] = visa_renewal_date unless visa_renewal_date.empty?
-              ea[:officeLocation] = office_location unless office_location.empty?
-              ea[:secondaryOfficeLocation] = secondry_office_location unless secondry_office_location.empty?
-              ea[:school] = school unless school.empty?
-              ea[:yearGraduated] = year_graduated unless year_graduated.empty?
-              ea[:directoryDepartment] = directory_department unless directory_department.empty?
-              ea[:directoryTitle] = directory_title unless directory_title.empty?
-              ea[:primaryTitle] = primary_title unless primary_title.empty?
-              ea[:vacationAccrual] = vacation_accural unless vacation_accural.nil?
-              ea[:onSabbatical] = is_on_sabbatical unless is_on_sabbatical.nil?
-              ea[:idProvided] = id_provided unless id_provided.empty?
-              ea[:idVerified] = id_verified unless id_verified.empty?
-              ea[:citizenshipType] = citizenship_type_code unless citizenship_type_code.empty?
-              ea[:multiCampusPrincipalId] = multi_campus_principal_id unless multi_campus_principal_id.empty?
-              ea[:multiCampusPrincipalName] = multi_campus_principal_name unless multi_campus_principal_name.empty?
-              ea[:salaryAnniversaryDate] = salary_anniversary_date unless salary_anniversary_date.empty?
-
-              record.kcExtendedAttributes ea
-
-              ap = {}
-              unit_number = ETL.parse_string( row[:unit_number], length: 8, name: 'UNIT_NUMBER' )
-              appointment_type_code = ETL.parse_string( row[:appointment_type_code], length: 3, name: 'APPOINTMENT_TYPE_CODE' )
-              job_code = ETL.parse_string( row[:job_code], length: 6, name: 'JOB_CODE' )
-              salary = ETL.parse_float(  row[:salary], length: 15, name: 'SALARY' )
-              appointment_start_date = ETL.parse_string( row[:appointment_start_date], name: 'APPOINTMENT_START_DATE' )
-              appointment_end_date = ETL.parse_string( row[:appointment_end_date], name: 'APPOINTMENT_END_DATE' )
-              job_title = ETL.parse_string( row[:job_title], length: 50, name: 'JOB_TITLE', strict: false )
-              prefered_job_title = ETL.parse_string( row[:prefered_job_title], length: 51, name: 'PREFERED_JOB_TITLE', strict: false )
-              ap[:unitNumber] = unit_number unless unit_number.empty?
-              ap[:appointmentType] = appointment_type_code unless appointment_type_code.empty?
-              ap[:jobCode] = job_code unless job_code.empty?
-              ap[:salary] = salary unless salary.nil?
-              ap[:startDate] = appointment_start_date unless appointment_start_date.empty?
-              ap[:endDate] = appointment_end_date unless appointment_end_date.empty?
-              ap[:jobTitle] = job_title unless job_title.empty?
-              ap[:preferedJobTitle] = prefered_job_title unless prefered_job_title.empty?
-
-              unless unit_number.empty? || job_code.empty?
-                record.appointments do |appointments|
-                  appointments.appointment ap
-                end # appointments
-              end
-            end # record
-
-          rescue TextParseError => e
-            puts e.message
-            text_parse_errors.push e
-          end
-        end # row
+            unless info[:appointments].nil? || info[:appointments].empty?
+              record.appointments do |appointments|
+                info[:appointments].each do |appointmentInfo|
+                  appointments.appointment appointmentInfo
+                end
+              end # appointments
+            end
+          end # record
+        end
       end # record
     end # hrmanifest
   end # xml_file
