@@ -96,9 +96,13 @@ def buildName(row)
   nm[:lastName]   = last_nm unless last_nm.empty?
   nm[:suffix]     = suffix_nm unless suffix_nm.empty?
   nm[:title]      = title_nm unless title_nm.empty?
-  nm[:default]    = true
-  nm[:active]     = true
-  return nm.empty? ? nil : nm 
+  if (!nm.empty?)
+    nm[:default]    = true
+    nm[:active]     = true
+    return nm
+  else
+    return nil
+  end
 end
 
 def buildExtendedAttributes(row) 
@@ -170,8 +174,6 @@ def buildAffiliations(row)
   campus       = ETL.parse_string row[:campus_cd], name: 'CAMPUS_CD', length: 2
   aff[:affiliationType] = afltn_typ_cd unless afltn_typ_cd.empty?
   aff[:campus]          = campus unless campus.empty?
-  aff[:default]         = true
-  aff[:active]          = true
   
   emp = {}
   emp_stat_cd   = GRM.parse_emp_stat_cd row[:emp_stat_cd]
@@ -184,13 +186,19 @@ def buildAffiliations(row)
   emp[:baseSalaryAmount]  = base_slry_amt unless base_slry_amt.nil?
   emp[:primaryDepartment] = prmry_dept_cd unless prmry_dept_cd.empty?
   emp[:employeeId]        = emp_id unless emp_id.empty?
-  emp[:primaryEmployment] = true
 
   if (!emp.empty?)
+    emp[:primaryEmployment] = true
     aff[:employment] = []
     aff[:employment].push(emp);
   end
-  return aff.empty? ? nil : aff
+  if (!aff.empty?)
+    aff[:default]         = true
+    aff[:active]          = true
+    return aff
+  else
+    return nil
+  end
 end
 
 def buildAddress(row)
@@ -211,8 +219,12 @@ def buildAddress(row)
   address[:stateOrProvince] = state_pvc_cd unless state_pvc_cd.empty?
   address[:postalCode]      = postal_cd unless postal_cd.empty?
   address[:country]         = postal_cntry_cd unless postal_cntry_cd.empty?
-  address[:default]         = true
-  return address.empty? ? nil : address
+  if (!address.empty?)
+    address[:default]         = true
+    return address
+  else
+    return nil
+  end
 end
 
 def buildPhone(row)
@@ -225,9 +237,13 @@ def buildPhone(row)
   ph[:phoneNumber] = phone_nbr unless phone_nbr.empty?
   ph[:extension]   = phone_extn_nbr unless phone_extn_nbr.empty?
   ph[:country]     = phone_cntry_cd unless phone_cntry_cd.empty?
-  ph[:default]     = true
-  ph[:active]      = true
-  return ph.empty? ? nil : ph
+  if (!ph.empty?)
+    ph[:default]     = true
+    ph[:active]      = true
+    return ph
+  else
+    return nil
+  end
 end
 
 def buildAppointment(row)
@@ -257,9 +273,13 @@ def buildEmail(row)
   email_addr = GRM.parse_email_address( row[:email_addr] )
   em[:emailType] = email_typ_cd unless email_typ_cd.empty?
   em[:emailAddress] = email_addr unless email_addr.empty?
-  em[:default] = true
-  em[:active]  = true
-  return em.empty? ? nil : em
+  if (!em.empty?)
+    em[:default] = true
+    em[:active]  = true
+    return em
+  else
+    return nil
+  end
 end
 
 def addToListIfNotIncluded(item, list)
