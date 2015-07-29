@@ -189,7 +189,7 @@ def buildAffiliations(row)
 
   if (!emp.empty?)
     emp[:primaryEmployment] = true
-    aff[:employment] = []
+    aff[:employment] = [];
     aff[:employment].push(emp);
   end
   if (!aff.empty?)
@@ -295,6 +295,20 @@ def addToListIfNotIncluded(item, list)
   end
 end
 
+def mergeEmployment(record, newAffiliation)
+  if (!newAffiliation[:employment].nil?)
+    newAffiliation[:employment].each do |employmentInfo|
+      if (record[:employment].nil?)
+        record[:employment] = []
+      end
+      if (!record[:employment].find{ |x| x[:primaryEmployment] }.nil?)
+        employmentInfo[:primaryEmployment] = false
+      end
+      record[:employment].push(employmentInfo)
+    end
+  end
+end
+
 opt = parse_command_line_options (File.basename $0), ARGF.argv
 
 text_parse_errors = []
@@ -315,8 +329,23 @@ CSV.open(opt[:csv_filename], opt[:csv_options]) do |csv|
       if (!newAffiliation.nil? && record[:affiliations].nil?)
         record[:affiliations] = []
       end
-      if (!record[:affiliations].include? newAffiliation)
+      duplicateAffil = record[:affiliations].find{ |affil| affil[:affiliationType] == newAffiliation[:affiliationType] && affil[:campus] == newAffiliation[:campus]};
+      if (duplicateAffil.nil?)
+        if (newAffiliation[:default] && !record[:affiliations].find{ |x| x[:default] }.nil?)
+          newAffiliation[:default] = false
+        end
+        mergeEmployment(record, newAffiliation)
         record[:affiliations].push(newAffiliation)
+      else
+        duplicateAffil[:employment].each do |employmentInfo|
+          newAffiliation[:employment].each do |newEmployment|
+            if (employmentInfo.select{ |key, value| key != :primaryEmployment} != newEmployment.select{ |key, value| key != :primaryEmployment})
+              e = Struct.new(:message).new("WARNING:Duplicate employment info for single affiliation. Skipping extra employment info on #{$.}");
+              puts e.message;
+              text_parse_errors.push e;
+            end
+          end
+        end
       end
 
       record[:names] = addToListIfNotIncluded(buildName(row), record[:names])
