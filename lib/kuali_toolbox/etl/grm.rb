@@ -120,7 +120,7 @@ module KualiCo::ETL::GRM
     #   `EMAIL_ADDRESS` varchar(60) COLLATE utf8_bin DEFAULT NULL,
     opt[:name]         = "EMAIL_ADDRESS" if opt[:name].nil?
     opt[:length]       = 60 if opt[:length].nil?
-    opt[:valid_values] = /^(([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?))?$/ if opt[:valid_values].nil?
+    opt[:valid_values] = /^(([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,5}|[0-9]{1,3})(\]?))?$/ if opt[:valid_values].nil?
     return KualiCo::ETL::parse_string str, opt
   end
 
