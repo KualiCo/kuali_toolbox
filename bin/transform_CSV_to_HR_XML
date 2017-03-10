@@ -45,6 +45,9 @@ def self.parse_command_line_options(
     opts.on( '-l [url]', '--url [url]', 'The full URL of the HR REST API; e.g. https://localhost/kc-dev/hr-import/hrimport/import' ) do |l|
       opt[:url] = l
     end
+    opts.on( '-c', '--continue', 'Continue writing the output file if errors are present' ) do 
+      opt[:continue] = true
+    end
     opts.on( '-h', '--help', 'Display this screen' ) do
       puts opts
       exit 1
@@ -451,9 +454,13 @@ end
 
 num_errors = number_of_errors text_parse_errors
 if num_errors > 0
-  puts "\n#{num_errors} errors found and must be corrected.\n\n"
-  File.unlink opt[:xml_filename]
-  exit 1
+  if opt[:continue]
+    puts "\n#{num_errors} errors found and skipped during XML tranformation."
+  else
+    puts "\n#{num_errors} errors found and must be corrected. To save only valid records, run with the -c option.\n\n"
+    File.unlink opt[:xml_filename]
+    exit 1
+  end
 end
 
 puts "\nXML file written to #{opt[:xml_filename]}\n\n"

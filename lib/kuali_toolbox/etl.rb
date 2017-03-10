@@ -141,22 +141,10 @@ module KualiCo::ETL
     return nil
   end
 
-  # Prepares a String for a SQL statement where single quotes need to be escaped.
-  # @param [String] str the String to be escaped.
-  # @return [String, nil] the resulting String with single quotes escaped with a backslash.
-  #   If a nil is passed, nil is returned.
-  def self.escape_single_quotes(str)
-    if str.nil?
-      return nil
-    end
-    return str.to_s.gsub("'", "\\\\'")
-  end
-
   # Parses a string using common parsing behavior with options. This method forms the foundation
   # of all the other parsing methods.
   # @param [String] str the String to be parsed.
   # @option opt [String, #to_s] :default the default return value if str is empty. Must respond to #to_s
-  # @option opt [Boolean] :escape_single_quotes escape single quote characters.
   # @option opt [Integer] :length raise a TextParseError if str.length > :length.
   # @option opt [Boolean] :truncate string if longer than length.
   # @option opt [String] :name the name of the field being parsed. Used only for error handling.
@@ -170,10 +158,8 @@ module KualiCo::ETL
   # @example nil or empty inputs will return the empty String by default
   #   '' == parse_string(nil) && '' == parse_string('')
   # @see valid_value
-  # @see escape_single_quotes
-  def self.parse_string(str, opt={ strict: true, required: false, escape_single_quotes: true })
+  def self.parse_string(str, opt={ strict: true, required: false })
     opt[:strict] = true if opt[:strict].nil?
-    opt[:escape_single_quotes] = true if opt[:escape_single_quotes].nil?
     retval = encode str.to_s.strip
     if opt[:required] && retval.empty?
       raise KualiCo::ETL::error TextParseError.new "Required data element '#{opt[:name]}' not found: '#{str}'"
@@ -193,9 +179,6 @@ module KualiCo::ETL
     end
     if opt[:valid_values] && ! valid_value(retval, opt[:valid_values], opt)
       raise KualiCo::ETL::error TextParseError.new "Illegal #{opt[:name]}: value '#{str}' not found in: #{opt[:valid_values]}"
-    end
-    if opt[:escape_single_quotes]
-      retval = escape_single_quotes retval
     end
     return retval
   end

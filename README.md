@@ -37,6 +37,7 @@ Usage: transform_CSV_to_HR_XML [options] csv_file
     -u, --username [username]        The username used to authenticate to the HR REST API.
     -p, --password [password]        The password used to authenticate to the HR REST API.
     -l, --url [url]                  The full URL of the HR REST API; e.g. https://localhost/kc-dev/hr-import/hrimport/import
+    -c, --continue                   Skips bad records and continues processing a CSV file if errors are found.
     -h, --help                       Display this screen
 ```
 > Note: Please be sure to use the [Account_Provisioning_CSV_Template.xlsx](https://github.com/KualiCo/kuali_toolbox/raw/master/Account_Provisioning_CSV_Template.xlsx) template with this tool.
@@ -55,3 +56,8 @@ Usage: validate_HR_XML xml_file
 3. Commit your changes: `git commit -am 'Add some feature'`
 4. Push to the branch: `git push origin my-new-feature`
 5. Create a new Pull Request
+
+## Pushing a Gem upgrade (must be a project owner on rubygems.org)
+1 - update <base>/lib/kuali_toolbox/version.rb with the new version number
+2 - gem build kuali_toolbox.gemspec
+3 - gem push kuali_toolbox-0.43.gem
