@@ -16,5 +16,5 @@
 
 module KualiCo
   # The gem version number.
-  VERSION = "0.44"
+  VERSION = "0.46"
 end
