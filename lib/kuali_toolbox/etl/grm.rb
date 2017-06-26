@@ -309,7 +309,7 @@ module KualiCo::ETL::GRM
   # @return [String] the parsed <tt>CITIZENSHIP_TYPE_CODE</tt>.
   # @raise [TextParseError] if the <tt>CITIZENSHIP_TYPE_CODE</tt> is not valid.
   # @see parse_string
-  def self.parse_citizenship_type(str, opt={ name: 'CITIZENSHIP_TYPE_CODE', valid_values: /^([1-5])$/ })
+  def self.parse_citizenship_type(str, opt={ name: 'CITIZENSHIP_TYPE_CODE', valid_values: /^([1-999])$/ })
     opt[:name]         = "CITIZENSHIP_TYPE_CODE" if opt[:name].nil?
     opt[:valid_values] = /^([1-5])$/ if opt[:valid_values].nil?
     opt[:default] = 1
@@ -368,7 +368,7 @@ module KualiCo::ETL::GRM
   def self.validate_hr_xml(xml_filename)
     ret_val = false
     # validate the resulting XML file against the official XSD schema
-    uri = URI 'https://raw.githubusercontent.com/KualiCo/ce-tech-docs/master/hrmanifest.xsd'
+    uri = URI 'https://raw.githubusercontent.com/KualiCo/ce-tech-docs/master/v2_0/hrmanifest.xsd'
     Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
       Tempfile.open "hrmanifest.xsd" do |schema|
         request = Net::HTTP::Get.new uri.request_uri

@@ -207,9 +207,9 @@ end
 def buildAddress(row)
   address         = {}
   addr_typ_cd     = GRM.parse_address_type_code( row[:addr_typ_cd] )
-  addr_line_1     = ETL.parse_string( row[:addr_line_1], name: 'ADDR_LINE_1', length: 45 )
-  addr_line_2     = ETL.parse_string( row[:addr_line_2], name: 'ADDR_LINE_2', length: 45 )
-  addr_line_3     = ETL.parse_string( row[:addr_line_3], name: 'ADDR_LINE_3', length: 45 )
+  addr_line_1     = ETL.parse_string( row[:addr_line_1], name: 'ADDR_LINE_1', length: 128 )
+  addr_line_2     = ETL.parse_string( row[:addr_line_2], name: 'ADDR_LINE_2', length: 128 )
+  addr_line_3     = ETL.parse_string( row[:addr_line_3], name: 'ADDR_LINE_3', length: 128 )
   city            = ETL.parse_string( row[:city], name: 'CITY', length: 30 )
   state_pvc_cd    = ETL.parse_string( row[:state_pvc_cd], name: 'STATE_PVC_CD', length: 2 )
   postal_cd       = ETL.parse_string( row[:postal_cd], name: 'POSTAL_CD', length: 20 )
