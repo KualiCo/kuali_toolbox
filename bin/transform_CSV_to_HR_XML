@@ -15,23 +15,26 @@ GRM = KualiCo::ETL::GRM
 TextParseError = KualiCo::ETL::TextParseError
 
 def self.parse_command_line_options(
-    executable, args, opt={ csv_options: { headers: :first_row,
-                                           header_converters: :symbol,
-                                           skip_blanks: true,
-                                           col_sep: ",", # comma by default
-                                           quote_char: '"', # double quote by default
-                                           }
-                            } )
-  optparse = OptionParser.new do |opts|
+    executable, args, opt={})
+
+    csv_options = { 
+      headers: :first_row,
+      header_converters: :symbol,
+      skip_blanks: true,
+      col_sep: ",", # comma by default
+      quote_char: '"', # double quote by default
+    }
+
+    optparse = OptionParser.new do |opts|
     opts.banner = "Usage: #{executable} [options] csv_file"
     opts.on( '-o [xml_file_output]' ,'--output [xml_file_output]', 'The file in which the the XML data will be writen (defaults to <csv_file>.xml)') do |f|
       opt[:xml_filename] = f
     end
     opts.on( '-s [separator_character]' ,'--separator [separator_character]', 'The character that separates each column of the CSV file.' ) do |s|
-      opt[:col_sep] = s
+      csv_options[:col_sep] = s
     end
     opts.on( '-q [quote_character]' ,'--quote [quote_character]', 'The character used to quote fields.' ) do |q|
-      opt[:quote_char] = q
+      csv_options[:quote_char] = q
     end
     opts.on( '-e [email_recipients]', '--email [email_recipients]', 'Email recipient list that will receive job report status.' ) do |e|
       opt[:email_recipients] = e
@@ -53,6 +56,8 @@ def self.parse_command_line_options(
       exit 1
     end
 
+    opt[:csv_options] = csv_options
+
     opt[:csv_filename] = args[0] unless opt[:csv_filename]
     if opt[:csv_filename].nil? || opt[:csv_filename].empty?
       puts opts
@@ -60,7 +65,7 @@ def self.parse_command_line_options(
     end
   end
   optparse.parse!
-
+  
   # construct a sensible default ouptput filename
   unless opt[:xml_filename]
     file_extension = File.extname opt[:csv_filename]
