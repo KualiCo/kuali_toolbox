@@ -12,7 +12,7 @@ To simply install the gem and provide access to the command line tools:
 
     $ gem install kuali_toolbox
 
-However, if you would like to reuse the our ruby modules in your own ruby program,
+However, if you would like to reuse our ruby modules in your own ruby program,
 add this line to your application's Gemfile:
 
 ```ruby
@@ -29,7 +29,7 @@ And then execute:
 
 ```
 Usage: transform_CSV_to_HR_XML [options] csv_file
-    -o, --output [xml_file_output]   The file in which the the XML data will be writen (defaults to <csv_file>.xml)
+    -o, --output [xml_file_output]   The file in which the XML data will be written (defaults to <csv_file>.xml)
     -s [separator_character],        The character that separates each column of the CSV file.
         --separator
     -q, --quote [quote_character]    The character used to quote fields.
