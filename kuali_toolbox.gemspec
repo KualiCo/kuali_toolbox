@@ -35,14 +35,15 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_runtime_dependency 'builder', '~> 3.2.2'
-  spec.add_runtime_dependency 'nokogiri', '~> 1.8.1'
-  spec.add_runtime_dependency 'rest-client', '~> 1.7.2'
+  spec.add_runtime_dependency 'builder', '~> 3.2.4'
+  spec.add_runtime_dependency 'nokogiri', '~> 1.16.2'
+  spec.add_runtime_dependency 'rest-client', '~> 2.1.0'
+  spec.add_runtime_dependency 'csv', '~> 3.2'
 
-  spec.required_ruby_version = '>= 1.9'
-  spec.add_development_dependency "bundler", "~> 1.6"
-  spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "rspec", "~> 3.0.0"
-  # spec.add_development_dependency "simplecov"
-  spec.add_development_dependency "codeclimate-test-reporter"
+  spec.required_ruby_version = '>= 3.3.0'
+  spec.add_development_dependency "bundler", "~> 2.5"
+  spec.add_development_dependency "rake", "~> 13.1"
+  spec.add_development_dependency "rspec", "~> 3.13"
+  spec.add_development_dependency "simplecov", "~> 0.22.0"
+  # spec.add_development_dependency "codeclimate-test-reporter"
 end
