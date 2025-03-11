@@ -38,6 +38,14 @@ module KualiCo::ETL
     raise ArgumentError, "Unsupported error type: #{e.class}"
   end
 
+  # Escapes single quotes in a string for use in SQL statements
+  # @param [String] str the string to escape
+  # @return [String, nil] the escaped string, or nil if input is nil
+  def self.escape_single_quotes(str)
+    return nil if str.nil?
+    str.to_s.gsub("'", "\\\\'")
+  end
+
   # Prepares an Exception for consistent warning handling.
   # @param [String, Exception] e the warning to handle
   # @return [Exception] an Exception with a message formatted with $INPUT_LINE_NUMBER.
@@ -180,7 +188,7 @@ module KualiCo::ETL
     if opt[:valid_values] && ! valid_value(retval, opt[:valid_values], opt)
       raise KualiCo::ETL::error TextParseError.new "Illegal #{opt[:name]}: value '#{str}' not found in: #{opt[:valid_values]}"
     end
-    return retval
+    return escape_single_quotes(retval)
   end
 
   # Helper method which finds the value by column :name and mutates the SQL statement accordingly.
@@ -374,14 +382,19 @@ module KualiCo::ETL
         puts opts
         exit 1
       end
+    end
 
+    begin
+      optparse.parse!(args)
       opt[:csv_filename] = args[0] unless opt[:csv_filename]
       if opt[:csv_filename].nil? || opt[:csv_filename].empty?
-        puts opts
+        puts optparse
         exit 1
       end
+    rescue OptionParser::InvalidOption => e
+      puts optparse
+      exit 1
     end
-    optparse.parse!
 
     # construct a sensible default ouptput filename
     unless opt[:sql_filename]
