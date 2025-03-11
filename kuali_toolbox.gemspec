@@ -37,7 +37,8 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency 'builder', '~> 3.2.4'
   spec.add_runtime_dependency 'nokogiri', '~> 1.16.2'
-  spec.add_runtime_dependency 'rest-client', '~> 2.1.0'
+  spec.add_runtime_dependency 'faraday', '~> 2.9.0'
+  spec.add_runtime_dependency 'faraday-multipart', '~> 1.0'
   spec.add_runtime_dependency 'csv', '~> 3.2'
 
   spec.required_ruby_version = '>= 3.3.0'

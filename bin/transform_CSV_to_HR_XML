@@ -6,9 +6,10 @@ require 'bundler/setup'
 require 'builder'
 require 'csv'
 require 'optparse'
-require 'rest_client'
 require 'time'
 require 'kuali_toolbox/etl/grm'
+require 'faraday'
+require 'faraday/multipart'
 
 ETL = KualiCo::ETL
 GRM = KualiCo::ETL::GRM
@@ -474,7 +475,13 @@ exit 1 unless GRM.validate_hr_xml opt[:xml_filename]
 
 # POST the XML file to the server if opt[:url]
 if opt[:url]
-  resource = RestClient::Resource.new( opt[:url], opt[:username], opt[:password] )
-  resource.post file: File.new(opt[:xml_filename], 'rt'), content_type: 'multipart/form-data', multipart: true
+  conn = Faraday.new(url: opt[:url]) do |f|
+    f.request :multipart
+    f.request :authorization, :basic, opt[:username], opt[:password]
+    f.adapter Faraday.default_adapter
+  end
+  
+  payload = { file: Faraday::UploadIO.new(opt[:xml_filename], 'text/xml') }
+  response = conn.post('', payload)
   puts "\n"
 end
