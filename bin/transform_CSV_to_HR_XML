@@ -58,15 +58,15 @@ def self.parse_command_line_options(
     end
 
     opt[:csv_options] = csv_options
-
-    opt[:csv_filename] = args[0] unless opt[:csv_filename]
-    if opt[:csv_filename].nil? || opt[:csv_filename].empty?
-      puts opts
-      exit 1
-    end
   end
-  optparse.parse!
+  optparse.parse!(args)
   
+  opt[:csv_filename] = args[0]
+  if opt[:csv_filename].nil? || opt[:csv_filename].empty?
+    puts optparse
+    exit 1
+  end
+
   # construct a sensible default ouptput filename
   unless opt[:xml_filename]
     file_extension = File.extname opt[:csv_filename]
@@ -323,7 +323,7 @@ opt = parse_command_line_options (File.basename $0), ARGF.argv
 text_parse_errors = []
 
 recordsByPrincipalId = {}
-CSV.open(opt[:csv_filename], opt[:csv_options]) do |csv|
+CSV.open(opt[:csv_filename], **opt[:csv_options]) do |csv|
   record_count = csv.readlines.count
   csv.rewind # go back to first row
   csv.find_all do |row|
