@@ -572,7 +572,7 @@ RSpec.describe "KualiCo::ETL::GRM" do
   end
 
   describe "#parse_citizenship_type" do
-    valid_values = ['1', '2', '3', '4']
+    valid_values = ['1', '2', '3', '4', '22', '123', '999']
 
     it "parses a citizenship_type from a String" do
       valid_values.each do |valid_value|
@@ -582,7 +582,7 @@ RSpec.describe "KualiCo::ETL::GRM" do
 
     it "raises an TextParseError if the citizenship_type is not a valid value" do
       expect { GRM.parse_citizenship_type("0") }.to raise_error(TextParseError)
-      expect { GRM.parse_citizenship_type("6") }.to raise_error(TextParseError)
+      expect { GRM.parse_citizenship_type("1000") }.to raise_error(TextParseError)
       expect { GRM.parse_citizenship_type("Z") }.to raise_error(TextParseError)
     end
 
@@ -591,8 +591,8 @@ RSpec.describe "KualiCo::ETL::GRM" do
       expect(GRM.parse_citizenship_type("")).to  eq("1")
     end
 
-    it "raises an TextParseError if length exceeds 1 character" do
-      expect { GRM.parse_citizenship_type("22") }.to raise_error(TextParseError)
+    it "raises an TextParseError if length exceeds 3 characters" do
+      expect { GRM.parse_citizenship_type("1234") }.to raise_error(TextParseError)
     end
   end
 

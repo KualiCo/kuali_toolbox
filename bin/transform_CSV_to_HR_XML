@@ -6,9 +6,10 @@ require 'bundler/setup'
 require 'builder'
 require 'csv'
 require 'optparse'
-require 'rest_client'
 require 'time'
 require 'kuali_toolbox/etl/grm'
+require 'faraday'
+require 'faraday/multipart'
 
 ETL = KualiCo::ETL
 GRM = KualiCo::ETL::GRM
@@ -57,15 +58,15 @@ def self.parse_command_line_options(
     end
 
     opt[:csv_options] = csv_options
-
-    opt[:csv_filename] = args[0] unless opt[:csv_filename]
-    if opt[:csv_filename].nil? || opt[:csv_filename].empty?
-      puts opts
-      exit 1
-    end
   end
-  optparse.parse!
+  optparse.parse!(args)
   
+  opt[:csv_filename] = args[0]
+  if opt[:csv_filename].nil? || opt[:csv_filename].empty?
+    puts optparse
+    exit 1
+  end
+
   # construct a sensible default ouptput filename
   unless opt[:xml_filename]
     file_extension = File.extname opt[:csv_filename]
@@ -322,7 +323,7 @@ opt = parse_command_line_options (File.basename $0), ARGF.argv
 text_parse_errors = []
 
 recordsByPrincipalId = {}
-CSV.open(opt[:csv_filename], opt[:csv_options]) do |csv|
+CSV.open(opt[:csv_filename], **opt[:csv_options]) do |csv|
   record_count = csv.readlines.count
   csv.rewind # go back to first row
   csv.find_all do |row|
@@ -474,7 +475,13 @@ exit 1 unless GRM.validate_hr_xml opt[:xml_filename]
 
 # POST the XML file to the server if opt[:url]
 if opt[:url]
-  resource = RestClient::Resource.new( opt[:url], opt[:username], opt[:password] )
-  resource.post file: File.new(opt[:xml_filename], 'rt'), content_type: 'multipart/form-data', multipart: true
+  conn = Faraday.new(url: opt[:url]) do |f|
+    f.request :multipart
+    f.request :authorization, :basic, opt[:username], opt[:password]
+    f.adapter Faraday.default_adapter
+  end
+  
+  payload = { file: Faraday::UploadIO.new(opt[:xml_filename], 'text/xml') }
+  response = conn.post('', payload)
   puts "\n"
 end

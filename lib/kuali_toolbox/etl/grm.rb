@@ -309,11 +309,11 @@ module KualiCo::ETL::GRM
   # @return [String] the parsed <tt>CITIZENSHIP_TYPE_CODE</tt>.
   # @raise [TextParseError] if the <tt>CITIZENSHIP_TYPE_CODE</tt> is not valid.
   # @see parse_string
-def self.parse_citizenship_type(str, opt={ name: 'CITIZENSHIP_TYPE_CODE', length: 3, valid_values: /^([1-9][0-9]{0,2})$/ })    
+  def self.parse_citizenship_type(str, opt={ name: 'CITIZENSHIP_TYPE_CODE', length: 3, valid_values: /^([1-9][0-9]{0,2})$/ })
     opt[:name]         = "CITIZENSHIP_TYPE_CODE" if opt[:name].nil?
+    opt[:length]       = 3 if opt[:length].nil?
     opt[:valid_values] = /^([1-9][0-9]{0,2})$/ if opt[:valid_values].nil?
-    opt[:length] = 3
-    opt[:default] = 1
+    opt[:default]      = "1" if opt[:default].nil?
     return KualiCo::ETL::parse_flag str, opt
   end
 
